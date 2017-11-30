@@ -9,6 +9,7 @@ class Copter{
 
 };
 
+
 int  main(){
     Copter myCopter;
     myCopter.x = 1;
@@ -23,3 +24,4 @@ int  main(){
     }
     return 0;
 }
+
