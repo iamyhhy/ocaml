@@ -1,11 +1,20 @@
 (* Starting practice2: generate a print_hello function for each type the
- * code has in C. eg. print_hello_int*)
+ * code has in C. eg. print_hello_int*
+ * Also, for each type, it only prints the corresponding function once.*)
+
 open Cil
 
-(*walk through the AST and add a correspoding print_hello_typ fuction in the
- * AST *)
+(*make a set module to have a set that contains all type signatures*)
+(*StringSet is just like "List" in ocaml, it is a module not an actual set*)
+module StringSet = Set.Make(String);
+let type_signature_set = StringSet.empty in
+let type_signature_set = StringSet.add "what" type_signature_set 
 
-let genFun :(string->GFun) = 
+
+let fun_list: global list ref = ref [];;
+let decl_list: global list ref = ref [];;
+
+let genFun :(string->Cil.file->fundec) = fun fun_name ast-> 
     let new_exp = Const(CStr("Hello World\n")) in 
         (* find the printf in ast and get the varinfo of it and replace the
          * printf_varinfo here: findOrCreateFunc*)
@@ -24,21 +33,37 @@ let genFun :(string->GFun) =
         
         let printf_instr = Call(None, Lval(Var printf_varinfo, NoOffset),
         [new_exp],locUnknown) in
-        let new_fundec = emptyFunction "print_hello" in
+        let new_fundec = emptyFunction fun_name in
         setFunctionTypeMakeFormals new_fundec (TFun(TVoid([]), Some([]), false,[]));
         Cil.setMaxId new_fundec;
         new_fundec.sbody <- ( mkBlock [(mkStmt (Instr( [printf_instr] )))] );
         computeCFGInfo new_fundec true; 
-       
-        let hello_func = GFun(new_fundec, locUnknown)
-       
+       (*return a fundec*)
+        new_fundec
+       (* GFun(new_fundec,locUnknown)*)
+        (*GVarDecl(new_fundec.svar,locUnknown)*)
 
-class typeCilVisitor = object(self)
+class typeCilVisitor ast = object(self)
     inherit nopCilVisitor
     method vtype typ =
         match typ with 
         | TInt(ikind, attr) ->
-
+                let int_fundec = genFun "print_hello_int" ast in 
+                let int_gfun = GFun(int_fundec,locUnknown) in
+                fun_list :=  int_gfun :: !fun_list;
+                let int_decl = GVarDecl(int_fundec.svar, locUnknown) in
+                decl_list := int_decl :: !decl_list;
+                DoChildren
+        | TPtr(ptr_type, attr) ->
+                let ptr_fundec = genFun "print_hello_ptr" ast in
+                let ptr_gfun = GFun(ptr_fundec, locUnknown) in
+                fun_list := ptr_gfun :: !fun_list;
+                let ptr_decl = GVarDecl(ptr_fundec.svar, locUnknown) in
+                decl_list := ptr_decl :: !decl_list;
+                DoChildren
+        | _ -> (); DoChildren 
+end;;
+          
 
 
 let main () = begin
@@ -56,7 +81,7 @@ let main () = begin
         Printf.printf "%s: parsing\n" filename;
         let ast = Frontc.parse filename () in
         Printf.printf "%s: parsed\n" filename;
-
+(*
         (*construct the print_hello function and add it to AST*)
         (*fundec(svar, sformals, slocals, smaxid, sbody, smaxstmtid,
          * sallstmts)*)
@@ -85,11 +110,16 @@ let main () = begin
         computeCFGInfo new_fundec true; 
        
         let hello_func = GFun(new_fundec, locUnknown) in
-        
+       
         ast.globals <-  (GVarDecl(new_fundec.svar,locUnknown) :: ast.globals) @ [hello_func];
 
+*)
+  
+        let visitor = new typeCilVisitor ast in
+        visitCilFileSameGlobals visitor ast;
+        (*@: append two lists; :: construct an element to the head if the list*)
+        ast.globals <- (!decl_list @ ast.globals) @ !fun_list;
 
-        
         dumpFile defaultCilPrinter stdout filename ast ;
 
     ) !files ;

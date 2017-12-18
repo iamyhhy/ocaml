@@ -20,7 +20,7 @@ test: addserialize
 	./hello_out < /dev/null
 
 array: addserialize
-	$(RM) serialized.data array.i array_out.c array_out
+	$(RM) serialized.data array.i  array_out
 	gcc -E array.c > array.i
 	./addserialize --variable lptr --serialize SERIALIZE --deserialize DESERIALIZE array.i 
 	gcc -o array_out array_out.c
@@ -29,3 +29,4 @@ array: addserialize
 
 clean:
 	$(RM) addserialize *.cm? *.o a.out hello hello_out hello.i array array_out array.i serialized.data
+

@@ -82,7 +82,7 @@ let main () = begin
 
     let visitor = new walktypeCilVisitor !target_type !target_label in
     visitCilFileSameGlobals visitor ast ;
-    dumpFile defaultCilPrinter stdout filename ast ; 
+    dumpFile plainCilPrinter stdout filename ast ; 
 
   ) !files ; 
 

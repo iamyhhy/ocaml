@@ -5,30 +5,28 @@ using namespace std;
 class Copter{
     public:
        float gps;
-        int x,y;
+        float x,y;
 
 };
 
 extern "C" {
-#include <fcntl.h>;
+    #include <fcntl.h>
 }
 extern "C" void *_memoize[4096] ;
-//extern "C" int _memoizeMax ;
-int _memoizeMax ;
-
+//extern "C" int  _memoizeMax ;
+int _memoizeMax;
 
 extern "C" void __serialize_Copter(struct Copter *ptr , int fd ) ;
 extern "C" void __serialize_scalar32(float *ptr , int fd ) ;
 extern "C" void __deserialize_Copter(struct Copter *ptr , int fd ) ;
 extern "C" void __deserialize_scalar32(float *ptr , int fd ) ;
-
 extern "C" void __serialize_Copter(struct Copter *ptr , int fd ) 
 { 
 
 
   {
   __serialize_scalar32(& ptr->gps, fd);
-  __serialize_scalar32((float *)(& ptr->x), fd);
+  __serialize_scalar32(& ptr->x, fd);
   __serialize_scalar32(& ptr->y, fd);
 }
 }

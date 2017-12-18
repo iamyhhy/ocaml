@@ -15,15 +15,24 @@ let globals = Hashtbl.create 255
  *) 
 let rec innerName basetype = 
   match unrollType basetype with
-  | TInt(_,_) 
+  | TInt(_,_)-> 
+    let bits = bitsSizeOf basetype in 
+    Printf.sprintf "scalarInt%d" bits 
   | TFloat(_,_) ->
     (* the only thing that matters in a scalar is its size *) 
     let bits = bitsSizeOf basetype in 
-    Printf.sprintf "scalar%d" bits 
-
+    Printf.sprintf "scalarFloat%d" bits 
+(*TODO: change scalar to int/float*)
   | TComp(ci,_) -> ci.cname 
 
   | TPtr(bt,_) -> "ptr_" ^ (innerName bt) 
+
+  | TArray(bt,Some(sizeExp),_) -> begin
+    match getInteger sizeExp with
+    | Some(ci) -> Printf.sprintf "array%s_%s" 
+      (string_of_cilint ci) (innerName bt) 
+    | None -> failwith "innerName: unknown array size" 
+  end 
 
 
   | _ -> failwith "innerName: unhandled" 
@@ -41,18 +50,14 @@ let createdSerializeCode = Hashtbl.create 255
  * C file. The new C functions, when later run at run-time, serialize 
  * dynamic variable values. *)
 let rec createSerializeCode typ = begin
-  let typ = unrollType typ in
-  (*create the serialization function name:*)
+  let typ = unrollType typ in 
   let name = serializeFunctionName typ in
   Printf.printf "%s: creating: %b\n" name (Hashtbl.mem createdSerializeCode name) ; 
-  (*if it hasn't been created before, then create it:*)
   if not (Hashtbl.mem createdSerializeCode name) then begin
-    let fd = emptyFunction name in (*create the function "__serialize_$typ(ptr, fd)"*)
-    let ptr_va = makeFormalVar fd "ptr" (TPtr(typ,[])) in (*parameters of the
-    function fd*)
-    let fd_va = makeFormalVar fd "fd" (intType) in (*parameters of function fd*) 
-    Hashtbl.add createdSerializeCode name fd ;(* has to do this earlier!!*)
-    (* create the body of function fd--__serialize_$typ(ptr,fd)*)
+    let fd = emptyFunction name in 
+    let ptr_va = makeFormalVar fd "ptr" (TPtr(typ,[])) in 
+    let fd_va = makeFormalVar fd "fd" (intType) in 
+    Hashtbl.add createdSerializeCode name fd ;
     let stmts = 
       match typ with
       | TInt(_,_) 
@@ -92,21 +97,23 @@ let rec createSerializeCode typ = begin
               ("ptr", Fv(ptr_va)) ; 
               ("serialize", Fv((Hashtbl.find createdSerializeCode serializeName).svar)) ;
               ] 
-        ) ci.cfields
+        ) ci.cfields 
 
+      | TArray(basetype,Some(sizeExp),_) -> 
+        createSerializeCode basetype ; 
+        let serializeName = serializeFunctionName basetype in
+        let str = "{ int i; i=0; while (i < %e:sizeExp) { \
+        serialize( & ((*ptr)[i]), fd); i = i + 1; }}" in 
+        Formatcil.cStmts str 
+          (fun n t -> makeTempVar fd ~name:n t) locUnknown
+          [ ("write", Fv(Hashtbl.find globals "write")) ; 
+            ("fd", Fv(fd_va)) ; 
+            ("ptr", Fv(ptr_va)) ; 
+            ("sizeExp", Fe(sizeExp)) ; 
+            ("serialize", Fv( (Hashtbl.find createdSerializeCode serializeName).svar)) ;
+            ]
 
-      (*add the TArray section to handle array type*)
-        (*it should go through the entire array and serialize/deserialize each
-         * element in the array*)
-     (* | TArray(basetype,exp,attr) -> 
-       (*attr is a attribute list*)
-        let len_arr = lenOfArray exp in
-        Printf.printf "The length is: %d\n" len_arr;
-              (*let str = Printf.sprintf "{int i; {i = 0; while (i < attr)}
-*)
-              *)
-
-      | _ -> failwith "createSerializedCode: unhandled" 
+      | _ -> failwith "createSerializedCode: unhandled"  
 
     in 
 
@@ -171,13 +178,20 @@ let rec createDeserializeCode typ = begin
               ] 
         ) ci.cfields 
 
-      (*add the TArray section to handle array type*)
-        (*it should go through the entire array and serialize/deserialize each
-         * element in the array*)
-      (*
-        | TArray(basetype,None,attr) -> 
-        ()
-        *)
+      | TArray(basetype,Some(sizeExp),_) -> 
+        createDeserializeCode basetype ; 
+        let deserializeName = deserializeFunctionName basetype in
+        let str = "{ int i; i=0; while (i < %e:sizeExp) { \
+        deserialize( & ((*ptr)[i]), fd); i = i + 1; }}" in 
+        Formatcil.cStmts str 
+          (fun n t -> makeTempVar fd ~name:n t) locUnknown
+          [ ("write", Fv(Hashtbl.find globals "write")) ; 
+            ("fd", Fv(fd_va)) ; 
+            ("ptr", Fv(ptr_va)) ; 
+            ("sizeExp", Fe(sizeExp)) ; 
+            ("deserialize", Fv( (Hashtbl.find createdSerializeCode deserializeName).svar)) ;
+            ]
+
       | _ -> failwith "createDeserializedCode: unhandled" 
 
     in 
@@ -324,7 +338,7 @@ let main () = begin
         ) createdSerializeCode ; 
         Hashtbl.iter (fun n fd -> lst := (GVarDecl(fd.svar,locUnknown)) :: !lst 
         ) createdSerializeCode ; 
-        !lst @ [(GFun(fd,x))] @ ( tl) 
+        !lst @ [(GFun(fd,x))] @ (addNewCode tl) 
 
       end else (GFun(fd,x) :: (addNewCode tl))
     | (other :: tl), _ -> other :: (addNewCode tl) 
@@ -343,4 +357,3 @@ let main () = begin
 
 end ;;
 main () ;; 
-
