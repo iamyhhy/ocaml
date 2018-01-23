@@ -602,15 +602,3 @@ struct Copter {
     // static const AP_Param::Info var_info[];
     // static const struct LogStructure log_structure[];
 };
-
-int main() {
-    struct Copter myCopter;
-    {
-    SERIALIZE:
-    }
-    {
-    DESERIALIZE:
-    }
-
-    return 0;
-}

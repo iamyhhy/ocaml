@@ -15,6 +15,7 @@ typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
 
+/*
 enum LandStateType {
     LandStateType_FlyToLocation = 0,
     LandStateType_Descending = 1
@@ -175,7 +176,7 @@ enum ThrowModeType {
     ThrowType_Upward = 0,
     ThrowType_Drop = 1
 };
-
+*/
 struct Copter {
     uint8_t command_ack_counter;
 

@@ -15,6 +15,7 @@ let globals = Hashtbl.create 255
  *) 
 let rec innerName basetype = 
   match unrollType basetype with
+  (*in c, uint8_t is the same as unsigned char*)
   | TInt(_,_)-> 
     let bits = bitsSizeOf basetype in 
     Printf.sprintf "scalarInt%d" bits 
@@ -26,6 +27,7 @@ let rec innerName basetype =
   | TComp(ci,_) -> ci.cname 
 
   | TPtr(bt,_) -> "ptr_" ^ (innerName bt) 
+  
 
   | TArray(bt,Some(sizeExp),_) -> begin
     match getInteger sizeExp with
@@ -33,9 +35,10 @@ let rec innerName basetype =
       (string_of_cilint ci) (innerName bt) 
     | None -> failwith "innerName: unknown array size" 
   end 
+  
+  | TEnum(ei,_)-> ei.ename
 
-
-  | _ -> failwith "innerName: unhandled" 
+  | _ -> failwith "innerName: unhandled"  
 
 let serializeFunctionName basetype = "__serialize_" ^ (innerName basetype) 
 let deserializeFunctionName basetype = "__deserialize_" ^ (innerName basetype) 
@@ -61,6 +64,7 @@ let rec createSerializeCode typ = begin
     let stmts = 
       match typ with
       | TInt(_,_) 
+      | TEnum(_,_)
       | TFloat(_,_) ->
         let bits = bitsSizeOf typ in 
         let str = Printf.sprintf "write(fd, ptr, %d);" (bits/8) in 
@@ -113,6 +117,10 @@ let rec createSerializeCode typ = begin
             ("serialize", Fv( (Hashtbl.find createdSerializeCode serializeName).svar)) ;
             ]
 
+
+       (* createSerializeCode basetype;
+        let serializeName = serializeFunctionName basetype in
+        let items = ei.eitems in *)
       | _ -> failwith "createSerializedCode: unhandled"  
 
     in 
@@ -138,6 +146,7 @@ let rec createDeserializeCode typ = begin
     let stmts = 
       match typ with
       | TInt(_,_) 
+      | TEnum(_,_)
       | TFloat(_,_) ->
         let bits = bitsSizeOf typ in 
         let str = Printf.sprintf "read(fd, ptr, %d);" (bits/8) in 
@@ -191,7 +200,7 @@ let rec createDeserializeCode typ = begin
             ("sizeExp", Fe(sizeExp)) ; 
             ("deserialize", Fv( (Hashtbl.find createdSerializeCode deserializeName).svar)) ;
             ]
-
+      | TEnum(_,_)
       | _ -> failwith "createDeserializedCode: unhandled" 
 
     in 
