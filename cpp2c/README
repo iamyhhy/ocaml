@@ -1,0 +1,35 @@
+1. get the cpp code of Copter.h
+2. run c preprocessor (cpp) using the command in cmd.txt to convert
+Copter.h to copter.i
+3. copy the copter struct to a new empty file: yu.i
+4. in yu.i, go through the code, comment all complicated classes. for
+the rest of data structures, look for the dependant typedefs in
+copter.i, and copy them back to yu.i
+5. run addserialize on yu.i
+
+
+#####################################
+How to run yu.i?
+1. You need to have the excutable: addserialize
+2. In yu.i, add a main() like this:
+
+int main(){
+    struct Copter myCopter;
+
+    {
+        SERIALIZE:
+    }
+
+    {
+        DESRIALIZE:
+    }
+
+    return 0;
+}
+
+
+3. Run addserialize: 
+./addserialize --variable myCopter --serialize SERIALIZE --deserialize DESERIALIZE yu.i
+
+Then you will have an output: yu_out.c
+
