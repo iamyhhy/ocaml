@@ -3,7 +3,14 @@ cpp -g -D_GNU_SOURCE -DF_CPU= -DSKETCH=\"ArduCopter\" -DSKETCHNAME="\"ArduCopter
 
 
 
-# FOR ubuntu office machine, does not include -g debug flag here(you may want it int he future). you have to run this in the directory : /build/sitl
-. the output will be in /build/sitl/ArduCopter
+# FOR ubuntu office machine, does not include -g debug flag here(you may
+#want it in the future). you have to run this in the directory : /build/sitl
+#the output will be in /build/sitl/ArduCopter
+# before you run the command, you may need to do "./waf copter" first under /ardupillot
+
 /usr/bin/cpp  -std=gnu++11 -fdata-sections -ffunction-sections -fno-exceptions -fsigned-char -Wall -Wextra -Wformat -Wshadow -Wpointer-arith -Wcast-align -Wundef -Wno-unused-parameter -Wno-missing-field-initializers -Wno-reorder -Wno-redundant-decls -Wno-unknown-pragmas -Werror=format-security -Werror=array-bounds -Werror=uninitialized -Werror=init-self -Werror=switch -Wfatal-errors -Wno-trigraphs -Werror=unused-but-set-variable  -include ap_config.h -Ilibraries -Ilibraries/GCS_MAVLink -I. -I../../libraries -I../../libraries/AP_Common/missing -DSKETCHBOOK="/home/yhhy/repos/ardupilot" -DCONFIG_HAL_BOARD=HAL_BOARD_SITL -DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE -DFRAME_CONFIG=HELI_FRAME -DAPM_BUILD_DIRECTORY=APM_BUILD_ArduCopter -DSKETCH="ArduCopter" -DSKETCHNAME="ArduCopter" ../../ArduCopter/ArduCopter.cpp  -o/home/yhhy/repos/ardupilot/build/sitl/ArduCopter/ArduCopter.i
 
+
+# FOR unbuntu home machine
+
+/usr/bin/cpp  -std=gnu++11 -fdata-sections -ffunction-sections -fno-exceptions -fsigned-char -Wall -Wextra -Wformat -Wshadow -Wpointer-arith -Wcast-align -Wundef -Wno-unused-parameter -Wno-missing-field-initializers -Wno-reorder -Wno-redundant-decls -Wno-unknown-pragmas -Werror=format-security -Werror=array-bounds -Werror=uninitialized -Werror=init-self -Werror=switch -Wfatal-errors -Wno-trigraphs -Werror=unused-but-set-variable  -include ap_config.h -Ilibraries -Ilibraries/GCS_MAVLink -I. -I../../libraries -I../../libraries/AP_Common/missing -DSKETCHBOOK="/home/yu/ardupilot" -DCONFIG_HAL_BOARD=HAL_BOARD_SITL -DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE -DFRAME_CONFIG=HELI_FRAME -DAPM_BUILD_DIRECTORY=APM_BUILD_ArduCopter -DSKETCH="ArduCopter" -DSKETCHNAME="ArduCopter" ../../ArduCopter/ArduCopter.cpp  -o/home/yu/ardupilot/build/sitl/ArduCopter/ArduCopter.i

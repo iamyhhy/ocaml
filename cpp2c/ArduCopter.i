@@ -81507,8 +81507,6 @@ private:
     void userhook_SlowLoop();
     void userhook_SuperSlowLoop();
 
-    void __serialize_Copter(Copter *ptr, int fd);
-
 # 1 "../../ArduCopter/mode.h" 1
        
 
@@ -82496,7 +82494,7 @@ protected:
 private:
 
 };
-# 942 "../../ArduCopter/Copter.h" 2
+# 940 "../../ArduCopter/Copter.h" 2
 
     Mode *flightmode;
 
@@ -82656,8 +82654,6 @@ void Copter::stats_update(void)
     g2.stats.update();
 }
 
-
-
 void Copter::loop()
 {
 
@@ -82690,16 +82686,6 @@ void Copter::loop()
     const uint32_t loop_us = scheduler.get_loop_period_us();
     const uint32_t time_available = (timer + loop_us) - micros();
     scheduler.run(time_available > loop_us ? 0u : time_available);
-
-
-
-    {
-        static int counter = 0;
-        if (counter++ % 100 == 0) {
-            printf("got here %d\n",counter) ;;
-        }
-    }
-
 }
 
 
@@ -83074,7 +83060,7 @@ void Copter::update_super_simple_bearing(bool force_update)
 
 void Copter::read_AHRS(void)
 {
-# 636 "../../ArduCopter/ArduCopter.cpp"
+# 624 "../../ArduCopter/ArduCopter.cpp"
     ahrs.update(true);
 }
 
