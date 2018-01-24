@@ -1,0 +1,358 @@
+rm -f wes.out
+./addserialize --variable myCopter --serialize SERIALIZE --deserialize DESERIALIZE wes.i
+wes.i: parsing
+wes.i: parsed
+__serialize_Copter: creating: false
+__serialize_scalarInt8: creating: false
+__serialize_scalarInt8: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_scalarInt32: creating: false
+__serialize_scalarInt32: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize___anonstruct_rangefinder_state_1: creating: false
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt16: creating: false
+__serialize_scalarInt16: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt8: creating: true
+__serialize___anonstruct_rangefinder_state_1: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarFloat32: creating: false
+__serialize_scalarFloat32: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt8: creating: true
+__serialize___anonunion_ap_2: creating: false
+__serialize___anonstruct____missing_field_name_3: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize___anonstruct____missing_field_name_3: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarInt32: creating: true
+__serialize___anonunion_ap_2: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_control_mode_t: creating: false
+__serialize_control_mode_t: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_mode_reason_t: creating: false
+__serialize_mode_reason_t: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_control_mode_t: creating: true
+__serialize_mode_reason_t: creating: true
+__serialize___anonstruct_control_switch_state_4: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt32: creating: true
+__serialize___anonstruct_control_switch_state_4: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize___anonstruct_takeoff_state_5: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize___anonstruct_takeoff_state_5: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt8: creating: true
+__serialize___anonstruct_failsafe_6: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize___anonstruct_failsafe_6: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize___anonstruct_sensor_health_7: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize___anonstruct_sensor_health_7: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_LandStateType: creating: false
+__serialize_LandStateType: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize___anonstruct_nav_payload_place_8: creating: false
+__serialize_PayloadPlaceStateType: creating: false
+__serialize_PayloadPlaceStateType: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize___anonstruct_nav_payload_place_8: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_AutoMode: creating: false
+__serialize_AutoMode: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_GuidedMode: creating: false
+__serialize_GuidedMode: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_RTLState: creating: false
+__serialize_RTLState: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_scalarInt8: creating: true
+__serialize___anonstruct_rtl_path_9: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize___anonstruct_rtl_path_9: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarInt8: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt16: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize___anonstruct_throw_state_10: creating: false
+__serialize_ThrowModeStage: creating: false
+__serialize_ThrowModeStage: creating: true
+is this anon:  false
+Size of stmt: 1
+__serialize_ThrowModeStage: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize___anonstruct_throw_state_10: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt16: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt16: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize_scalarInt16: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt16: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt32: creating: true
+__serialize___anonstruct_gndeffect_state_11: creating: false
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt8: creating: true
+__serialize_scalarInt32: creating: true
+__serialize_scalarFloat32: creating: true
+__serialize___anonstruct_gndeffect_state_11: creating: true
+is this anon:  true
+Size of stmt: 0
+__serialize_scalarInt8: creating: true
+__serialize_Copter: creating: true
+is this anon:  false
+Size of stmt: 70
+__deserialize_Copter: creating: false
+__deserialize_scalarInt8: creating: false
+__deserialize_scalarInt32: creating: false
+__deserialize___anonstruct_rangefinder_state_1: creating: false
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt16: creating: false
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarFloat32: creating: false
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize___anonunion_ap_2: creating: false
+__deserialize___anonstruct____missing_field_name_3: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_control_mode_t: creating: false
+__deserialize_mode_reason_t: creating: false
+__deserialize_control_mode_t: creating: true
+__deserialize_mode_reason_t: creating: true
+__deserialize___anonstruct_control_switch_state_4: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize___anonstruct_takeoff_state_5: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize___anonstruct_failsafe_6: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize___anonstruct_sensor_health_7: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_LandStateType: creating: false
+__deserialize___anonstruct_nav_payload_place_8: creating: false
+__deserialize_PayloadPlaceStateType: creating: false
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_AutoMode: creating: false
+__deserialize_GuidedMode: creating: false
+__deserialize_RTLState: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize___anonstruct_rtl_path_9: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt16: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize___anonstruct_throw_state_10: creating: false
+__deserialize_ThrowModeStage: creating: false
+__deserialize_ThrowModeStage: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt16: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt16: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt16: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt16: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize___anonstruct_gndeffect_state_11: creating: false
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt8: creating: true
+__deserialize_scalarInt32: creating: true
+__deserialize_scalarFloat32: creating: true
+__deserialize_scalarInt8: creating: true

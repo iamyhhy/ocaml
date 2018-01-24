@@ -1,11 +1,12 @@
-1. get the cpp code of Copter.h
-2. run c preprocessor (cpp) using the command in cmd.txt to convert
-Copter.h to copter.i
-3. copy the copter struct to a new empty file: yu.i
+The ardupilot version: Jan232018
+
+1. get the cpp code of ArduCopter.cpp
+2. run c preprocessor (cpp) using the command in cmd.txt to convert ArduCopter.cpp to ArduCopter.i (, it can be called test.i. follow the indtruction in cmd.txt)
+3. copy the copter struct in test.i to a new empty file: yu.i
 4. in yu.i, go through the code, comment all complicated classes. for
 the rest of data structures, look for the dependant typedefs in
-copter.i, and copy them back to yu.i
-5. run addserialize on yu.i
+test.i, and copy them back to yu.i
+5. run addserialize on yu.i (Makefile)
 
 
 #####################################

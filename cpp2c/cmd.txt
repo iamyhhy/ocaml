@@ -1,1 +1,9 @@
+#FOR MAC:
 cpp -g -D_GNU_SOURCE -DF_CPU= -DSKETCH=\"ArduCopter\" -DSKETCHNAME="\"ArduCopter\"" -DSKETCHBOOK="\"/Users/yu/repos/ardupilot\"" -DAPM_BUILD_DIRECTORY=APM_BUILD_ArduCopter -DGIT_VERSION="\"acf2e10c\"" -DCONFIG_HAL_BOARD=HAL_BOARD_SITL -DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE -O3 -g -std=gnu++11 -Wformat -Wall -Wshadow -Wpointer-arith -Wcast-align -Wno-unused-parameter -Wno-missing-field-initializers -Wwrite-strings -Wformat=2 -Wno-reorder -Werror=unused-but-set-variable -MD -MT /var/folders/_l/_gnkbfq9755b4gdq2jgwngj80000gr/T/ArduCopter.build/ArduCopter.o -ffunction-sections -fdata-sections -fno-exceptions -fsigned-char -o test.i ArduCopterC.cpp -I/Users/yu/repos/ardupilot/libraries/ -I/Users/yu/repos/ardupilot/build/sitl/libraries/GCS_MAVLink/
+
+
+
+# FOR ubuntu office machine, does not include -g debug flag here(you may want it int he future). you have to run this in the directory : /build/sitl
+. the output will be in /build/sitl/ArduCopter
+/usr/bin/cpp  -std=gnu++11 -fdata-sections -ffunction-sections -fno-exceptions -fsigned-char -Wall -Wextra -Wformat -Wshadow -Wpointer-arith -Wcast-align -Wundef -Wno-unused-parameter -Wno-missing-field-initializers -Wno-reorder -Wno-redundant-decls -Wno-unknown-pragmas -Werror=format-security -Werror=array-bounds -Werror=uninitialized -Werror=init-self -Werror=switch -Wfatal-errors -Wno-trigraphs -Werror=unused-but-set-variable  -include ap_config.h -Ilibraries -Ilibraries/GCS_MAVLink -I. -I../../libraries -I../../libraries/AP_Common/missing -DSKETCHBOOK="/home/yhhy/repos/ardupilot" -DCONFIG_HAL_BOARD=HAL_BOARD_SITL -DCONFIG_HAL_BOARD_SUBTYPE=HAL_BOARD_SUBTYPE_NONE -DFRAME_CONFIG=HELI_FRAME -DAPM_BUILD_DIRECTORY=APM_BUILD_ArduCopter -DSKETCH="ArduCopter" -DSKETCHNAME="ArduCopter" ../../ArduCopter/ArduCopter.cpp  -o/home/yhhy/repos/ardupilot/build/sitl/ArduCopter/ArduCopter.i
+

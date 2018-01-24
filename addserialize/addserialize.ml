@@ -124,7 +124,17 @@ let rec createSerializeCode typ = begin
       | _ -> failwith "createSerializedCode: unhandled"  
 
     in 
+	let contains s1 s2 =
+		let re = Str.regexp_string s2
+		in
+			try ignore (Str.search_forward re s1 0); true
+			with Not_found -> false in
+    let this_is_one_of_those_anonymous_types = contains name "anon" in
 
+    let stmts = if this_is_one_of_those_anonymous_types then [] else stmts in 
+    Printf.printf "%s: creating: %b\n" name (Hashtbl.mem createdSerializeCode name) ; 
+    Printf.printf "is this anon:  %b\n" this_is_one_of_those_anonymous_types;
+    Printf.printf "Size of stmt: %d\n" (List.length stmts); 
     let block = mkBlock (compactStmts stmts) in 
     fd.sbody <- block 
 
@@ -205,6 +215,16 @@ let rec createDeserializeCode typ = begin
 
     in 
 
+	let contains s1 s2 =
+		let re = Str.regexp_string s2
+		in
+			try ignore (Str.search_forward re s1 0); true
+			with Not_found -> false in
+    let this_is_one_of_those_anonymous_types = contains name "anon" in
+
+    let stmts = if this_is_one_of_those_anonymous_types then [] else stmts in 
+    Printf.printf "%s: creating: %b\n" name (Hashtbl.mem createdSerializeCode name) ; 
+    Printf.printf "is this anon:  %b\n" this_is_one_of_those_anonymous_types;
     let block = mkBlock (compactStmts stmts) in 
     fd.sbody <- block 
 
