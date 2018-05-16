@@ -1,0 +1,9 @@
+uint8_t:1
+bool:6
+int16_t: 6
+uint32_t: 21
+int8_t: 42
+float: 15
+enum: 3 (HomeState, control_mode_t, mode_reason_t)
+
+total: 205+3 bytes

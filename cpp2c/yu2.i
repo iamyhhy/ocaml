@@ -81,537 +81,6 @@ enum mode_reason_t {
     MODE_REASON_TERMINATE,
 };
 typedef enum mode_reason_t mode_reason_t;
-
-// ADD in struct AP_Mission
-    enum mission_state {
-        MISSION_STOPPED=0,
-        MISSION_RUNNING=1,
-        MISSION_COMPLETE=2
-    };
-
-    typedef enum mission_state mission_state;
-
-
-
-
-struct AP_Mission{
-//public:
-/*
-    struct __attribute__((__packed__)) Jump_Command {
-        uint16_t target;
-        int16_t num_times;
-    };
-
-
-    struct __attribute__((__packed__)) Conditional_Delay_Command {
-        float seconds;
-    };
-
-
-    struct __attribute__((__packed__)) Conditional_Distance_Command {
-        float meters;
-    };
-
-
-    struct __attribute__((__packed__)) Yaw_Command {
-        float angle_deg;
-        float turn_rate_dps;
-        int8_t direction;
-        uint8_t relative_angle;
-    };
-
-
-    struct __attribute__((__packed__)) Change_Speed_Command {
-        uint8_t speed_type;
-        float target_ms;
-        float throttle_pct;
-    };
-
-
-    struct __attribute__((__packed__)) Set_Relay_Command {
-        uint8_t num;
-        uint8_t state;
-    };
-
-
-    struct __attribute__((__packed__)) Repeat_Relay_Command {
-        uint8_t num;
-        int16_t repeat_count;
-        float cycle_time;
-    };
-
-
-    struct __attribute__((__packed__)) Set_Servo_Command {
-        uint8_t channel;
-        uint16_t pwm;
-    };
-
-
-    struct __attribute__((__packed__)) Repeat_Servo_Command {
-        uint8_t channel;
-        uint16_t pwm;
-        int16_t repeat_count;
-        float cycle_time;
-    };
-
-
-    struct __attribute__((__packed__)) Mount_Control {
-        float pitch;
-        float roll;
-        float yaw;
-    };
-
-
-    struct __attribute__((__packed__)) Digicam_Configure {
-        uint8_t shooting_mode;
-        uint16_t shutter_speed;
-        uint8_t aperture;
-        uint16_t ISO;
-        uint8_t exposure_type;
-        uint8_t cmd_id;
-        float engine_cutoff_time;
-    };
-
-
-    struct __attribute__((__packed__)) Digicam_Control {
-        uint8_t session;
-        uint8_t zoom_pos;
-        int8_t zoom_step;
-        uint8_t focus_lock;
-        uint8_t shooting_cmd;
-        uint8_t cmd_id;
-    };
-
-
-    struct __attribute__((__packed__)) Cam_Trigg_Distance {
-        float meters;
-    };
-
-
-    struct __attribute__((__packed__)) Gripper_Command {
-        uint8_t num;
-        uint8_t action;
-    };
-
-
-    struct __attribute__((__packed__)) Altitude_Wait {
-        float altitude;
-        float descent_rate;
-        uint8_t wiggle_time;
-    };
-
-
-    struct __attribute__((__packed__)) Guided_Limits_Command {
-
-        float alt_min;
-        float alt_max;
-        float horiz_max;
-    };
-
-
-    struct __attribute__((__packed__)) Do_VTOL_Transition {
-        uint8_t target_state;
-    };
-
-
-    struct __attribute__((__packed__)) Navigation_Delay_Command {
-        float seconds;
-        int8_t hour_utc;
-        int8_t min_utc;
-        int8_t sec_utc;
-    };
-
-
-    struct __attribute__((__packed__)) Do_Engine_Control {
-        bool start_control;
-        bool cold_start;
-        uint16_t height_delay_cm;
-    };
-
-
-    struct __attribute__((__packed__)) Set_Yaw_Speed {
-        float angle_deg;
-        float speed;
-        uint8_t relative_angle;
-    };
-
-
-    struct __attribute__((__packed__)) Winch_Command {
-        uint8_t num;
-        uint8_t action;
-        float release_length;
-        float release_rate;
-    };
-*/
-/*
-    union __attribute__((__packed__)) Content {
-
-        Jump_Command jump;
-
-
-        Conditional_Delay_Command delay;
-
-
-        Conditional_Distance_Command distance;
-
-
-        Yaw_Command yaw;
-
-
-        Change_Speed_Command speed;
-
-
-        Set_Relay_Command relay;
-
-
-        Repeat_Relay_Command repeat_relay;
-
-
-        Set_Servo_Command servo;
-
-
-        Repeat_Servo_Command repeat_servo;
-
-
-        Mount_Control mount_control;
-
-
-        Digicam_Configure digicam_configure;
-
-
-        Digicam_Control digicam_control;
-
-
-        Cam_Trigg_Distance cam_trigg_dist;
-
-
-        Gripper_Command gripper;
-
-
-        Guided_Limits_Command guided_limits;
-
-
-        Altitude_Wait altitude_wait;
-
-
-        Do_VTOL_Transition do_vtol_transition;
-
-
-        Do_Engine_Control do_engine_control;
-
-
-        Navigation_Delay_Command nav_delay;
-
-
-        Set_Yaw_Speed set_yaw_speed;
-
-
-        Winch_Command winch;
-
-
-        Location location;
-
-
-
-        uint8_t bytes[12];
-    };
-*/
-
-    struct Mission_Command {
-        uint16_t index;
-        uint16_t id;
-        uint16_t p1;
- //       Content content;
-
-
-        //const char *type() const;
-        
-    };
-
-
-
-    //typedef Functor<bool, const Mission_Command&> mission_cmd_fn_t;
-    //typedef Functor<void> mission_complete_fn_t;
-
-
-
-
-   /*
-   static AP_Mission create(AP_AHRS &ahrs,
-                             mission_cmd_fn_t cmd_start_fn,
-                             mission_cmd_fn_t cmd_verify_fn,
-                             mission_complete_fn_t mission_complete_fn) {
-        return AP_Mission(ahrs, cmd_start_fn, cmd_verify_fn, mission_complete_fn);
-    }
-
-    constexpr AP_Mission(AP_Mission &&other) = default;
-
-
-    AP_Mission(const AP_Mission &other) = delete;
-    AP_Mission &operator=(const AP_Mission&) = delete;
-
-
-
-
-
-
-    void init();
-
-
-    mission_state state() const { return _flags.state; }
-
-
-
-    uint16_t num_commands() const { return _cmd_total; }
-
-
-    uint16_t num_commands_max() const;
-
-
-
-    void start();
-
-
-    void stop();
-
-
-
-    void resume();
-
-
-    void start_or_resume();
-
-
-    bool starts_with_takeoff_cmd();
-
-
-    void reset();
-
-
-
-    bool clear();
-
-
-    void truncate(uint16_t index);
-
-
-
-    void update();
-# 358 "/Users/yu/repos/ardupilot/libraries/AP_Mission/AP_Mission.h"
-    bool add_cmd(Mission_Command& cmd);
-
-
-
-
-    bool replace_cmd(uint16_t index, Mission_Command& cmd);
-
-
-    static bool is_nav_cmd(const Mission_Command& cmd);
-
-
-    const Mission_Command& get_current_nav_cmd() const { return _nav_cmd; }
-
-
-
-
-    uint16_t get_current_nav_index() const {
-        return _nav_cmd.index==65535?0:_nav_cmd.index; }
-
-
-
-
-    uint16_t get_prev_nav_cmd_id() const { return _prev_nav_cmd_id; }
-
-
-
-
-    uint16_t get_prev_nav_cmd_index() const { return _prev_nav_cmd_index; }
-
-
-
-
-    uint16_t get_prev_nav_cmd_with_wp_index() const { return _prev_nav_cmd_wp_index; }
-
-
-
-
-    bool get_next_nav_cmd(uint16_t start_index, Mission_Command& cmd);
-
-
-
-
-    int32_t get_next_ground_course_cd(int32_t default_angle);
-
-
-    const Mission_Command& get_current_do_cmd() const { return _do_cmd; }
-
-
-    bool set_current_cmd(uint16_t index);
-
-
-
-    bool read_cmd_from_storage(uint16_t index, Mission_Command& cmd) const;
-
-
-
-
-    bool write_cmd_to_storage(uint16_t index, Mission_Command& cmd);
-
-
-
-    void write_home_to_storage();
-
-
-
-    static MAV_MISSION_RESULT mavlink_to_mission_cmd(const mavlink_mission_item_t& packet, AP_Mission::Mission_Command& cmd);
-    static MAV_MISSION_RESULT mavlink_int_to_mission_cmd(const mavlink_mission_item_int_t& packet, AP_Mission::Mission_Command& cmd);
-
-
-
-    static MAV_MISSION_RESULT mavlink_cmd_long_to_mission_cmd(const mavlink_command_long_t& packet, AP_Mission::Mission_Command& cmd);
-
-
-
-    static bool mission_cmd_to_mavlink(const AP_Mission::Mission_Command& cmd, mavlink_mission_item_t& packet);
-    static bool mission_cmd_to_mavlink_int(const AP_Mission::Mission_Command& cmd, mavlink_mission_item_int_t& packet);
-
-
-    uint32_t last_change_time_ms(void) const { return _last_change_time_ms; }
-
-
-
-
-    uint16_t get_landing_sequence_start();
-
-
-
-
-    bool jump_to_landing_sequence(void);
-
-
-    static const struct AP_Param::GroupInfo var_info[];
-*/
-//private:
-//    static StorageAccess _storage;
-
-    struct Mission_Flags {
-        mission_state state;
-        uint8_t nav_cmd_loaded : 1;
-        uint8_t do_cmd_loaded : 1;
-        uint8_t do_cmd_all_done : 1;
-    } _flags;
-
-/* 
-    // constructor:
-    AP_Mission(AP_AHRS &ahrs, mission_cmd_fn_t cmd_start_fn, mission_cmd_fn_t cmd_verify_fn, mission_complete_fn_t mission_complete_fn) :
-        _ahrs(ahrs),
-        _cmd_start_fn(cmd_start_fn),
-        _cmd_verify_fn(cmd_verify_fn),
-        _mission_complete_fn(mission_complete_fn),
-        _prev_nav_cmd_id(0),
-        _prev_nav_cmd_index(65535),
-        _prev_nav_cmd_wp_index(65535),
-        _last_change_time_ms(0)
-    {
-
-        AP_Param::setup_object_defaults(this, var_info);
-
-
-        _nav_cmd.index = 65535;
-        _do_cmd.index = 65535;
-
-
-        _flags.state = MISSION_STOPPED;
-        _flags.nav_cmd_loaded = false;
-        _flags.do_cmd_loaded = false;
-    }
-
-*/
-
-
-
-/*
-
-    void complete();
-
-
-
-
-
-    bool advance_current_nav_cmd();
-
-
-
-
-    void advance_current_do_cmd();
-
-
-
-
-
-    bool get_next_cmd(uint16_t start_index, Mission_Command& cmd, bool increment_jump_num_times_if_found);
-
-
-
-
-
-    bool get_next_do_cmd(uint16_t start_index, Mission_Command& cmd);
-
-
-
-
-
-    void init_jump_tracking();
-
-
-
-    int16_t get_jump_times_run(const Mission_Command& cmd);
-
-
-    void increment_jump_times_run(Mission_Command& cmd);
-
-
-
-    void check_eeprom_version();
-*/
-
-
-// TODO!!!
- // const AP_AHRS& _ahrs;
- // const AP_AHRS * _ahrs;
-
-// AP_ParamT object
-    //AP_Int16 _cmd_total;
-    int16_t _cmd_total;
-   // AP_Int8 _restart;
-   int8_t _restart;
-    //AP_Int16 _options;
-    int16_t _options;
-
-
-    //mission_cmd_fn_t _cmd_start_fn;
-    //mission_cmd_fn_t _cmd_verify_fn;
-    //mission_complete_fn_t _mission_complete_fn;
-
-
-    struct Mission_Command _nav_cmd;
-    struct Mission_Command _do_cmd;
-    uint16_t _prev_nav_cmd_id;
-    uint16_t _prev_nav_cmd_index;
-    uint16_t _prev_nav_cmd_wp_index;
-
-/*
-    struct jump_tracking_struct {
-        uint16_t index;
-        int16_t num_times_run;
-    } _jump_tracking[15];
-*/
-
-    uint32_t _last_change_time_ms;
-};
-
-typedef struct AP_Mission AP_Mission;
-
 /*
 class Copter : public AP_HAL::HAL::Callbacks {
 
@@ -695,10 +164,10 @@ struct Copter {
 
 */
 
-   // AP_Mission mission{ahrs,
-   //         Functor<bool, const AP_Mission::Mission_Command &>::bind<std::remove_reference<decltype(*this)>::type, &Copter::start_command>(this),
-  //          Functor<bool, const AP_Mission::Mission_Command &>::bind<std::remove_reference<decltype(*this)>::type, &Copter::verify_command_callback>(this),
-  //          Functor<void>::bind<std::remove_reference<decltype(*this)>::type, &Copter::exit_mission>(this)};
+    AP_Mission mission{ahrs,
+            Functor<bool, const AP_Mission::Mission_Command &>::bind<std::remove_reference<decltype(*this)>::type, &Copter::start_command>(this),
+            Functor<bool, const AP_Mission::Mission_Command &>::bind<std::remove_reference<decltype(*this)>::type, &Copter::verify_command_callback>(this),
+            Functor<void>::bind<std::remove_reference<decltype(*this)>::type, &Copter::exit_mission>(this)};
 /*
     bool start_command(const AP_Mission::Mission_Command& cmd) {
         return mode_auto.start_command(cmd);
@@ -836,15 +305,15 @@ struct Copter {
     //const struct AP_Param::GroupInfo *motors_var_info;
 
 
-// 109-112
+
     float scaleLongDown;
-// 101-108
+
     int32_t _home_bearing;
     uint32_t _home_distance;
 
 
 
-// 77-100
+
     float simple_cos_yaw;
     float simple_sin_yaw;
     int32_t super_simple_last_bearing;
@@ -862,17 +331,17 @@ struct Copter {
     //AP_Frsky_Telem frsky_telemetry{ahrs, battery, rangefinder};
 
 
-// 65-76
+
     uint32_t control_sensors_present;
     uint32_t control_sensors_enabled;
     uint32_t control_sensors_health;
 
 
 
-    int16_t climb_rate;//63-64
-    float target_rangefinder_alt;//59-62
-    int32_t baro_alt;//55-58
-    float baro_climbrate;//51-54
+    int16_t climb_rate;
+    float target_rangefinder_alt;
+    int32_t baro_alt;
+    float baro_climbrate;
     //LowPassFilterVector3f land_accel_ef_filter;
 
 
@@ -886,30 +355,30 @@ struct Copter {
     //Location_Class current_loc;
 
 
-//50
+
     uint8_t auto_yaw_mode;
 
 
     //Vector3f roi_WP;
 
-//46-49
+
     float yaw_look_at_WP_bearing;
 
-//42-45
+
     int32_t yaw_look_at_heading;
 
-//40-41
+
     int16_t yaw_look_at_heading_slew;
 
-//37-40
+
     float yaw_look_ahead_bearing;
 
-//33-36
+
     float auto_yaw_rate_cds;
 
 
 
-//28-32
+
     float G_Dt;
 
 /*
@@ -920,19 +389,19 @@ struct Copter {
     AC_WPNav *wp_nav;
     AC_Circle *circle_nav;
 */
-//26-27
+
     int16_t pmTest1;
 
 
 
-//22-25
+
     uint32_t fast_loopTimer;
-//20-21
+
     uint16_t mainLoop_count;
-//16-19
+
     uint32_t arm_time_ms;
 
-// 15
+
     uint8_t auto_trim_counter;
 
 
@@ -1003,17 +472,17 @@ struct Copter {
 
    // AP_Avoidance_Copter avoidance_adsb{ahrs, adsb};
 
-//14
+
     bool in_mavlink_delay;
 
-//10-13
+
     uint32_t last_radio_update_ms;
 
-//6-9
+
     uint32_t esc_calibration_notify_update_ms;
 
 
-//2-5
+
     uint32_t visual_odom_last_update_ms;
 
 
@@ -1027,7 +496,7 @@ struct Copter {
 
    // ModeFilterInt16_Size5 rotor_speed_deglitch_filter {4};
 
-//DOES NOT EXIST FOR COPTER
+
         int16_t hover_roll_trim_scalar_slew;
 
 
@@ -1039,7 +508,7 @@ struct Copter {
         float takeoff_alt_cm;
     } gndeffect_state;
 
-//1
+
     bool upgrading_frame_params;
 
    // static const AP_Scheduler::Task scheduler_tasks[];
@@ -1716,9 +1185,10 @@ private:
 
     AutoMode _mode = Auto_TakeOff;
 */
-    AP_Mission * mission;
-  /*
-  AC_Circle *&circle_nav;
+    AP_Mission &mission;
+
+    /*
+    AC_Circle *&circle_nav;
 
     Location_Class terrain_adjusted_location(const AP_Mission::Mission_Command& cmd) const;
 
@@ -2425,8 +1895,6 @@ public:
 
     */
 };
-
-
 int main() {
     struct Copter myCopter;
     {

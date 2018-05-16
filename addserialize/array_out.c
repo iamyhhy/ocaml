@@ -870,17 +870,18 @@ struct flock {
    __off_t l_len ;
    __pid_t l_pid ;
 };
-#line 8 "hello.c"
-struct yu {
+#line 8 "array.c"
+struct inner {
    int x ;
+   char y ;
 };
-#line 12 "hello.c"
+#line 13 "array.c"
 struct list_node {
    int head ;
    struct list_node *tail ;
    struct list_node *self1 ;
    struct list_node *self2 ;
-   struct yu y ;
+   struct inner array[2] ;
 };
 /* compiler builtin: 
    void __builtin_va_copy(__builtin_va_list  , __builtin_va_list  ) ;  */
@@ -2224,12 +2225,16 @@ extern  __attribute__((__nothrow__)) int ( __attribute__((__leaf__)) posix_fadvi
 #line 270
 extern int posix_fallocate(int __fd , off_t __offset , off_t __len ) ;
 void __serialize_ptr_list_node(struct list_node **ptr , int fd ) ;
+void __deserialize_array2_inner(struct inner (*ptr)[2] , int fd ) ;
+void __serialize_inner(struct inner *ptr , int fd ) ;
+void __serialize_scalarInt8(char *ptr , int fd ) ;
 void __deserialize_ptr_list_node(struct list_node **ptr , int fd ) ;
 void __serialize_list_node(struct list_node *ptr , int fd ) ;
-void __deserialize_yu(struct yu *ptr , int fd ) ;
+void __deserialize_inner(struct inner *ptr , int fd ) ;
 void __deserialize_scalarInt32(int *ptr , int fd ) ;
 void __serialize_scalarInt32(int *ptr , int fd ) ;
-void __serialize_yu(struct yu *ptr , int fd ) ;
+void __deserialize_scalarInt8(char *ptr , int fd ) ;
+void __serialize_array2_inner(struct inner (*ptr)[2] , int fd ) ;
 void __deserialize_list_node(struct list_node *ptr , int fd ) ;
 void __serialize_ptr_list_node(struct list_node **ptr , int fd ) 
 { 
@@ -2255,6 +2260,37 @@ void __serialize_ptr_list_node(struct list_node **ptr , int fd )
   }
 }
 }
+void __deserialize_array2_inner(struct inner (*ptr)[2] , int fd ) 
+{ 
+  int i3 ;
+
+  {
+  i3 = 0;
+  while (i3 < 2) {
+    {
+    __deserialize_inner(& (*ptr)[i3], fd);
+    i3 ++;
+    }
+  }
+}
+}
+void __serialize_inner(struct inner *ptr , int fd ) 
+{ 
+
+
+  {
+  __serialize_scalarInt32((int *)(& ptr->x), fd);
+  __serialize_scalarInt8((char *)(& ptr->y), fd);
+}
+}
+void __serialize_scalarInt8(char *ptr , int fd ) 
+{ 
+
+
+  {
+  write(fd, ptr, 1);
+}
+}
 void __deserialize_ptr_list_node(struct list_node **ptr , int fd ) 
 { 
   int i3 ;
@@ -2276,7 +2312,7 @@ void __deserialize_ptr_list_node(struct list_node **ptr , int fd )
       }
     }
     _memoize[_memoizeMax] = *ptr;
-    *ptr = (struct list_node *)malloc(40);
+    *ptr = (struct list_node *)malloc(48);
     _memoize[_memoizeMax + 1] = *ptr;
     _memoizeMax += 2;
     __deserialize_list_node(*ptr, fd);
@@ -2293,15 +2329,16 @@ void __serialize_list_node(struct list_node *ptr , int fd )
   __serialize_ptr_list_node((struct list_node **)(& ptr->tail), fd);
   __serialize_ptr_list_node((struct list_node **)(& ptr->self1), fd);
   __serialize_ptr_list_node((struct list_node **)(& ptr->self2), fd);
-  __serialize_yu((struct yu *)(& ptr->y), fd);
+  __serialize_array2_inner((struct inner (*)[2])(& ptr->array), fd);
 }
 }
-void __deserialize_yu(struct yu *ptr , int fd ) 
+void __deserialize_inner(struct inner *ptr , int fd ) 
 { 
 
 
   {
   __deserialize_scalarInt32((int *)(& ptr->x), fd);
+  __deserialize_scalarInt8((char *)(& ptr->y), fd);
 }
 }
 void __deserialize_scalarInt32(int *ptr , int fd ) 
@@ -2320,12 +2357,26 @@ void __serialize_scalarInt32(int *ptr , int fd )
   write(fd, ptr, 4);
 }
 }
-void __serialize_yu(struct yu *ptr , int fd ) 
+void __deserialize_scalarInt8(char *ptr , int fd ) 
 { 
 
 
   {
-  __serialize_scalarInt32((int *)(& ptr->x), fd);
+  read(fd, ptr, 1);
+}
+}
+void __serialize_array2_inner(struct inner (*ptr)[2] , int fd ) 
+{ 
+  int i3 ;
+
+  {
+  i3 = 0;
+  while (i3 < 2) {
+    {
+    __serialize_inner(& (*ptr)[i3], fd);
+    i3 ++;
+    }
+  }
 }
 }
 void __deserialize_list_node(struct list_node *ptr , int fd ) 
@@ -2337,77 +2388,103 @@ void __deserialize_list_node(struct list_node *ptr , int fd )
   __deserialize_ptr_list_node((struct list_node **)(& ptr->tail), fd);
   __deserialize_ptr_list_node((struct list_node **)(& ptr->self1), fd);
   __deserialize_ptr_list_node((struct list_node **)(& ptr->self2), fd);
-  __deserialize_yu((struct yu *)(& ptr->y), fd);
+  __deserialize_array2_inner((struct inner (*)[2])(& ptr->array), fd);
 }
 }
-#line 19 "hello.c"
+#line 20 "array.c"
 int main(void) 
 { 
   struct list_node *lptr ;
+  int counter ;
+  int i ;
   int data ;
   struct list_node *old ;
   void *tmp ;
-  int fd5 ;
-  int fd6 ;
+  int tmp___0 ;
+  int tmp___1 ;
+  int fd9 ;
+  int fd10 ;
 
   {
-#line 20
+#line 21
   lptr = (struct list_node *)((void *)0);
 #line 22
-  while (1) {
+  counter = 0;
 #line 24
+  while (1) {
+#line 26
     old = lptr;
-#line 25
+#line 27
     scanf((char const   */* __restrict  */)" %d", & data);
-#line 26
+#line 28
     if (data <= 0) {
-#line 26
+#line 28
       break;
     }
-#line 28
-    tmp = malloc(sizeof(*lptr));
-#line 28
-    lptr = (struct list_node *)tmp;
-#line 29
-    lptr->head = data;
 #line 30
-    lptr->tail = old;
+    tmp = malloc(sizeof(*lptr));
+#line 30
+    lptr = (struct list_node *)tmp;
 #line 31
-    lptr->self1 = lptr;
+    lptr->head = data;
 #line 32
+    lptr->tail = old;
+#line 33
+    lptr->self1 = lptr;
+#line 34
     lptr->self2 = lptr;
-  }
 #line 35
+    i = 0;
+#line 35
+    while (i < 2) {
+#line 36
+      tmp___0 = counter;
+#line 36
+      counter ++;
+#line 36
+      lptr->array[i].x = tmp___0;
+#line 37
+      tmp___1 = counter;
+#line 37
+      counter ++;
+#line 37
+      lptr->array[i].y = (char )(97 + tmp___1);
+#line 35
+      i ++;
+    }
+  }
+#line 41
   if ((unsigned long )lptr == (unsigned long )((void *)0)) {
     {
     DESERIALIZE: ;
     {
-    fd5 = open("serialized.data", 514, 504);
+    fd9 = open("serialized.data", 514, 504);
     _memoizeMax = 0;
-    __deserialize_ptr_list_node(& lptr, fd5);
-    close(fd5);
+    __deserialize_ptr_list_node(& lptr, fd9);
+    close(fd9);
     }
     }
   } else {
     {
     SERIALIZE: ;
     {
-    fd6 = open("serialized.data", 514, 504);
+    fd10 = open("serialized.data", 514, 504);
     _memoizeMax = 0;
-    __serialize_ptr_list_node(& lptr, fd6);
-    close(fd6);
+    __serialize_ptr_list_node(& lptr, fd10);
+    close(fd10);
     }
     }
   }
-#line 41
+#line 47
   while (lptr) {
-#line 42
-    printf((char const   */* __restrict  */)"%d %p %p\n", lptr->head, lptr->self1,
-           lptr->self2);
-#line 41
+#line 48
+    printf((char const   */* __restrict  */)"%d %p %p %d %c %d %c\n", lptr->head,
+           lptr->self1, lptr->self2, lptr->array[0].x, (int )lptr->array[0].y, lptr->array[1].x,
+           (int )lptr->array[1].y);
+#line 47
     lptr = lptr->tail;
   }
-#line 45
+#line 53
   return (0);
 }
 }

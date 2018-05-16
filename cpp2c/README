@@ -6,10 +6,18 @@ The ardupilot version: Jan232018
 
 3. copy the copter struct in test.i to a new empty file: yu.i
 
+yu.i---Copter
+ap_mission.i --- AP_Mission
+ap_ahrs.i --- AP_AHRS
+
+
 4. in yu.i, go through the code, comment all complicated classes. for the rest of data structures, look for the dependant typedefs in test.i, and copy them back to yu.i
 
-5. run addserialize on yu.i (Makefile)
-
+5. try compile yu.i with gcc to make sure there is no syntax error:
+gcc -c yu.i -o yu
+(-c allows you to compile the .i file without a main() function)
+6. run addserialize on yu.i (Makefile: make test, after the
+following steps of "How to run yu.i")
 
 #####################################
 How to run yu.i?
@@ -32,7 +40,38 @@ int main(){
 
 
 3. Run addserialize: 
-./addserialize --variable myCopter --serialize SERIALIZE --deserialize DESERIALIZE yu.i
+./addserialize --variable myCopter --serialize SERIALIZE --deserialize DESERIALIZE yu.i  ------ make test
 
 Then you will have an output: yu_out.c
+
+yu_out.c will have the added __serialize__ and __deserialize__
+functions in it.
+###############################################################
+
+7. rename yu_out.c to copter_out.c (easy to maintain files), copy all the serialize/deserilize
+functions in copter_out.c into
+ArduCopter.cpp: All the functions have to be somewhere outside the
+Copter:loop() function (you cannot declare fuctions in a function).
+Then inside Copter:loop(), you need to call all the
+serialize/deserialize functions (passing in valid fd etc)
+
+8. run Arducoputer: under /ArduCopter, "python
+../Tools/autotest/sim_vehicle.py -w"
+
+9. After it is "stablize", kill it. then run "python
+../Tools/autotest/sim_vehicle.py --console --map -C"
+(map: MicrosoftHyb)
+
+10. How to let the copter move:
+arm throttle
+mode auto
+rc 3 1500
+
+11. How to make the copter fly following a mission:
+have a mission file: Arducopter/mission_3_2.txt
+
+restart the copter with home location: 
+"python ../Tools/autotest/sim_vehicle.py -l 37.9941253662109375,-78.39752197265625,99.7299957275390625,180 --console --map -C"
+
+load a mission plan: "wp load mission_3_2.txt"
 

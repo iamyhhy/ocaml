@@ -48,6 +48,7 @@ let deserializeFunctionName basetype = "__deserialize_" ^ (innerName basetype)
  * we add them all to the file (and print them out). 
  *)
 let createdSerializeCode = Hashtbl.create 255 
+(* type of argument of serialized code ht *) 
 
 (* This OCaml function creates new C functions that are added to the input
  * C file. The new C functions, when later run at run-time, serialize 
@@ -58,7 +59,10 @@ let rec createSerializeCode typ = begin
   Printf.printf "%s: creating: %b\n" name (Hashtbl.mem createdSerializeCode name) ; 
   if not (Hashtbl.mem createdSerializeCode name) then begin
     let fd = emptyFunction name in 
-    let ptr_va = makeFormalVar fd "ptr" (TPtr(typ,[])) in 
+    let ptr_type = (TPtr(typ,[])) in 
+    let ptr_va = makeFormalVar fd "ptr" ptr_type in 
+    (* FIX:the type you want is thetype of ptr_va *) 
+    (* FIX:hashtbl.add typeo-fo-argument-ht name ptr_va.type  *)
     let fd_va = makeFormalVar fd "fd" (intType) in 
     Hashtbl.add createdSerializeCode name fd ;
     let stmts = 
@@ -93,13 +97,25 @@ let rec createSerializeCode typ = begin
           let fname = fi.fname in 
           let ftype = fi.ftype in 
           createSerializeCode ftype ; 
-          let str = Printf.sprintf "serialize(&(ptr->%s) ,fd);" fname in
           let serializeName = serializeFunctionName ftype in
+          let serializeFd = Hashtbl.find createdSerializeCode serializeName in 
+          let first_formal = List.hd serializeFd.sformals in 
+          let first_formal_type = first_formal.vtype in
+          let str = "serialize(%e:exp_with_cast , fd);" in
+          let my_type = first_formal_type in
+          let ptr_va_exp = Lval((Var ptr_va), NoOffset) in 
+          let original_exp = mkAddrOf ( 
+               (     Mem( ptr_va_exp ),
+                   Field(fi, NoOffset) )
+               ) in 
+          let final_exp = CastE(my_type, original_exp) in
+
           Formatcil.cStmt str 
             (fun n t -> makeTempVar fd ~name:n t) locUnknown
             [ ("fd", Fv(fd_va)) ; 
-              ("ptr", Fv(ptr_va)) ; 
-              ("serialize", Fv((Hashtbl.find createdSerializeCode serializeName).svar)) ;
+              ("ptr", Fv(ptr_va));  
+              ("exp_with_cast", Fe(final_exp));
+              ("serialize", Fv((serializeFd).svar)) ;
               ] 
         ) ci.cfields 
 
@@ -187,15 +203,39 @@ let rec createDeserializeCode typ = begin
           let fname = fi.fname in 
           let ftype = fi.ftype in 
           createDeserializeCode ftype ; 
-          let str = Printf.sprintf "deserialize(&(ptr->%s) ,fd);" fname in
+         (* let str = Printf.sprintf "deserialize(&(ptr->%s) ,fd);"
+          * fname in*)
           let deserializeName = deserializeFunctionName ftype in
+
+          let deserializeFd = Hashtbl.find createdSerializeCode deserializeName in 
+          let first_formal = List.hd deserializeFd.sformals in 
+          let first_formal_type = first_formal.vtype in
+          let str = "deserialize(%e:exp_with_cast , fd);" in
+          let my_type = first_formal_type in
+          let ptr_va_exp = Lval((Var ptr_va), NoOffset) in 
+          let original_exp = mkAddrOf ( 
+               (     Mem( ptr_va_exp ),
+                   Field(fi, NoOffset) )
+               ) in 
+          let final_exp = CastE(my_type, original_exp) in
+
           Formatcil.cStmt str 
+            (fun n t -> makeTempVar fd ~name:n t) locUnknown
+            [ ("fd", Fv(fd_va)) ; 
+              ("ptr", Fv(ptr_va));  
+              ("exp_with_cast", Fe(final_exp));
+              ("deserialize", Fv((deserializeFd).svar)) ;
+              ] 
+        ) ci.cfields 
+
+
+          (*Formatcil.cStmt str 
             (fun n t -> makeTempVar fd ~name:n t) locUnknown
             [ ("fd", Fv(fd_va)) ; 
               ("ptr", Fv(ptr_va)) ; 
               ("deserialize", Fv((Hashtbl.find createdSerializeCode deserializeName).svar)) ;
               ] 
-        ) ci.cfields 
+        ) ci.cfields *)
 
       | TArray(basetype,Some(sizeExp),_) -> 
         createDeserializeCode basetype ; 
