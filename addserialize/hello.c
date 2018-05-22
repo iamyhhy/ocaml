@@ -4,44 +4,43 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
 struct yu{
+
     int x;
+    int y;
+    int z;
+    int m;
+    int n;
 };
 
-struct list_node { 
-  int head;
-  struct list_node * tail;
-  struct list_node * self1, *self2;
-  struct yu y;
+struct union_test {
+    int x;
+    int y;
+  union Content {
+      int v1;
+      int v2;
+      float v3;
+      long v4;
+      struct yu v5; /* &v5 == 0x1000 */
+  }Content;
 };
 
 int main () {
-  struct list_node * lptr = NULL;
+  struct union_test myStruct;
+  {
+    SERIALIZE:
+  }
+  {
+    DESERIALIZE:
+  }
+  /*
+   
+     union Content u;
 
-  while (1) {
-      int data; 
-      struct list_node * old = lptr; 
-      scanf(" %d", &data); 
-      if (data <= 0) break; 
+     serailize on & (u.v5) once you find that v5 is the biggest
+     in LVal 
+  
+    */
 
-      lptr = malloc(sizeof(*lptr));
-      lptr->head = data;
-      lptr->tail = old ; 
-      lptr->self1 = lptr ; 
-      lptr->self2 = lptr ; 
-  } 
-
-  if (lptr == NULL) {
-DESERIALIZE: 
-  } else {
-SERIALIZE: 
-  } 
-
-  for (; lptr; lptr=lptr->tail) {
-      printf("%d %p %p\n", lptr->head, lptr->self1, lptr->self2); 
-  } 
-
-  return 0; 
-
+  return 0;
 } 

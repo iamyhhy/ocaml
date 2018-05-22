@@ -870,17 +870,27 @@ struct flock {
    __off_t l_len ;
    __pid_t l_pid ;
 };
-#line 8 "hello.c"
+#line 7 "hello.c"
 struct yu {
    int x ;
+   int y ;
+   int z ;
+   int m ;
+   int n ;
 };
-#line 12 "hello.c"
-struct list_node {
-   int head ;
-   struct list_node *tail ;
-   struct list_node *self1 ;
-   struct list_node *self2 ;
-   struct yu y ;
+#line 16 "hello.c"
+union Content {
+   int v1 ;
+   int v2 ;
+   float v3 ;
+   long v4 ;
+   struct yu v5 ;
+};
+#line 16 "hello.c"
+struct union_test {
+   int x ;
+   int y ;
+   union Content Content ;
 };
 /* compiler builtin: 
    void __builtin_va_copy(__builtin_va_list  , __builtin_va_list  ) ;  */
@@ -2223,85 +2233,46 @@ extern  __attribute__((__nothrow__)) int ( __attribute__((__leaf__)) posix_fadvi
                                                                                     int __advise ) ;
 #line 270
 extern int posix_fallocate(int __fd , off_t __offset , off_t __len ) ;
-void __serialize_ptr_list_node(struct list_node **ptr , int fd ) ;
-void __deserialize_ptr_list_node(struct list_node **ptr , int fd ) ;
-void __serialize_list_node(struct list_node *ptr , int fd ) ;
-void __deserialize_yu(struct yu *ptr , int fd ) ;
+void __serialize_Content(union Content *ptr , int fd ) ;
+void __deserialize_union_test(struct union_test *ptr , int fd ) ;
+void __deserialize_Content(union Content *ptr , int fd ) ;
+void __serialize_union_test(struct union_test *ptr , int fd ) ;
 void __deserialize_scalarInt32(int *ptr , int fd ) ;
 void __serialize_scalarInt32(int *ptr , int fd ) ;
-void __serialize_yu(struct yu *ptr , int fd ) ;
-void __deserialize_list_node(struct list_node *ptr , int fd ) ;
-void __serialize_ptr_list_node(struct list_node **ptr , int fd ) 
-{ 
-  int i3 ;
-
-  {
-  write(fd, ptr, sizeof(*ptr));
-  if (*ptr != 0) {
-    {
-    i3 = 0;
-    while (i3 < _memoizeMax) {
-      {
-      if (_memoize[i3] == *ptr) {
-        return;
-      }
-      i3 ++;
-      }
-    }
-    _memoize[_memoizeMax] = *ptr;
-    _memoizeMax ++;
-    __serialize_list_node(*ptr, fd);
-    }
-  }
-}
-}
-void __deserialize_ptr_list_node(struct list_node **ptr , int fd ) 
-{ 
-  int i3 ;
-
-  {
-  read(fd, ptr, sizeof(*ptr));
-  if (*ptr != 0) {
-    {
-    i3 = 0;
-    while (i3 < _memoizeMax) {
-      {
-      if (_memoize[i3] == *ptr) {
-        {
-        *ptr = _memoize[i3 + 1];
-        return;
-        }
-      }
-      i3 += 2;
-      }
-    }
-    _memoize[_memoizeMax] = *ptr;
-    *ptr = (struct list_node *)malloc(40);
-    _memoize[_memoizeMax + 1] = *ptr;
-    _memoizeMax += 2;
-    __deserialize_list_node(*ptr, fd);
-    }
-  }
-}
-}
-void __serialize_list_node(struct list_node *ptr , int fd ) 
+void __serialize_Content(union Content *ptr , int fd ) 
 { 
 
 
   {
-  __serialize_scalarInt32((int *)(& ptr->head), fd);
-  __serialize_ptr_list_node((struct list_node **)(& ptr->tail), fd);
-  __serialize_ptr_list_node((struct list_node **)(& ptr->self1), fd);
-  __serialize_ptr_list_node((struct list_node **)(& ptr->self2), fd);
-  __serialize_yu((struct yu *)(& ptr->y), fd);
+  write(fd, ptr, 20);
 }
 }
-void __deserialize_yu(struct yu *ptr , int fd ) 
+void __deserialize_union_test(struct union_test *ptr , int fd ) 
 { 
 
 
   {
   __deserialize_scalarInt32((int *)(& ptr->x), fd);
+  __deserialize_scalarInt32((int *)(& ptr->y), fd);
+  __deserialize_Content((union Content *)(& ptr->Content), fd);
+}
+}
+void __deserialize_Content(union Content *ptr , int fd ) 
+{ 
+
+
+  {
+  read(fd, ptr, 20);
+}
+}
+void __serialize_union_test(struct union_test *ptr , int fd ) 
+{ 
+
+
+  {
+  __serialize_scalarInt32((int *)(& ptr->x), fd);
+  __serialize_scalarInt32((int *)(& ptr->y), fd);
+  __serialize_Content((union Content *)(& ptr->Content), fd);
 }
 }
 void __deserialize_scalarInt32(int *ptr , int fd ) 
@@ -2320,93 +2291,58 @@ void __serialize_scalarInt32(int *ptr , int fd )
   write(fd, ptr, 4);
 }
 }
-void __serialize_yu(struct yu *ptr , int fd ) 
-{ 
-
-
-  {
-  __serialize_scalarInt32((int *)(& ptr->x), fd);
-}
-}
-void __deserialize_list_node(struct list_node *ptr , int fd ) 
-{ 
-
-
-  {
-  __deserialize_scalarInt32((int *)(& ptr->head), fd);
-  __deserialize_ptr_list_node((struct list_node **)(& ptr->tail), fd);
-  __deserialize_ptr_list_node((struct list_node **)(& ptr->self1), fd);
-  __deserialize_ptr_list_node((struct list_node **)(& ptr->self2), fd);
-  __deserialize_yu((struct yu *)(& ptr->y), fd);
-}
-}
-#line 19 "hello.c"
+#line 28 "hello.c"
 int main(void) 
 { 
-  struct list_node *lptr ;
-  int data ;
-  struct list_node *old ;
-  void *tmp ;
-  int fd5 ;
-  int fd6 ;
+  struct union_test myStruct ;
+  int fd2 ;
+  int fd3 ;
+  myStruct.x=1;
+  myStruct.y=2;
+  
+
+  struct yu myyu;
+  myyu.x=7;
+  myyu.y=8;
+  myyu.z=9;
+  myyu.m=10;
+  myyu.n=11;
+  myStruct.Content.v5=myyu;
+
+
 
   {
-#line 20
-  lptr = (struct list_node *)((void *)0);
-#line 22
-  while (1) {
-#line 24
-    old = lptr;
-#line 25
-    scanf((char const   */* __restrict  */)" %d", & data);
-#line 26
-    if (data <= 0) {
-#line 26
-      break;
-    }
-#line 28
-    tmp = malloc(sizeof(*lptr));
-#line 28
-    lptr = (struct list_node *)tmp;
-#line 29
-    lptr->head = data;
-#line 30
-    lptr->tail = old;
-#line 31
-    lptr->self1 = lptr;
-#line 32
-    lptr->self2 = lptr;
+  {
+  SERIALIZE: ;
+  {
+  fd2 = open("serialized.data", 66, 504);
+  _memoizeMax = 0;
+  __serialize_union_test(& myStruct, fd2);
+  close(fd2);
   }
-#line 35
-  if ((unsigned long )lptr == (unsigned long )((void *)0)) {
-    {
-    DESERIALIZE: ;
-    {
-    fd5 = open("serialized.data", 514, 504);
-    _memoizeMax = 0;
-    __deserialize_ptr_list_node(& lptr, fd5);
-    close(fd5);
-    }
-    }
-  } else {
-    {
-    SERIALIZE: ;
-    {
-    fd6 = open("serialized.data", 514, 504);
-    _memoizeMax = 0;
-    __serialize_ptr_list_node(& lptr, fd6);
-    close(fd6);
-    }
-    }
   }
-#line 41
-  while (lptr) {
-#line 42
-    printf((char const   */* __restrict  */)"%d %p %p\n", lptr->head, lptr->self1,
-           lptr->self2);
-#line 41
-    lptr = lptr->tail;
+  {
+  DESERIALIZE: ;
+  {
+  myStruct.x=12;
+  myStruct.y=13;
+  
+struct yu myyu2;
+  myyu2.x=14;
+  myyu2.y=15;
+  myyu2.z=16;
+  myyu2.m=17;
+  myyu2.n=18;
+  myStruct.Content.v5 = myyu2;
+
+  fd3 = open("serialized.data", 66, 504);
+  _memoizeMax = 0;
+  __deserialize_union_test(& myStruct, fd3);
+  close(fd3);
   }
+  }
+
+  printf("x=%d, y=%d, content.x = %d, content.y=%d, content.z = %d, content.m=%d, content.n = %d\n", myStruct.x, myStruct.y, myStruct.Content.v5.x, myStruct.Content.v5.y, myStruct.Content.v5.z, myStruct.Content.v5.m, myStruct.Content.v5.n);
 #line 45
   return (0);
 }

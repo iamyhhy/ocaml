@@ -92,8 +92,9 @@ let rec createSerializeCode typ = begin
             ]
 
 
-      | TComp(ci,_) -> 
-        List.map (fun fi ->
+      | TComp(ci,_) when ci.cstruct -> 
+            (* this matches a struct *)
+         let list_of_list = List.map (fun fi ->
           let fname = fi.fname in 
           let ftype = fi.ftype in 
           createSerializeCode ftype ; 
@@ -101,7 +102,7 @@ let rec createSerializeCode typ = begin
           let serializeFd = Hashtbl.find createdSerializeCode serializeName in 
           let first_formal = List.hd serializeFd.sformals in 
           let first_formal_type = first_formal.vtype in
-          let str = "serialize(%e:exp_with_cast , fd);" in
+
           let my_type = first_formal_type in
           let ptr_va_exp = Lval((Var ptr_va), NoOffset) in 
           let original_exp = mkAddrOf ( 
@@ -109,15 +110,54 @@ let rec createSerializeCode typ = begin
                    Field(fi, NoOffset) )
                ) in 
           let final_exp = CastE(my_type, original_exp) in
-
-          Formatcil.cStmt str 
+          
+          match fi.fbitfield with 
+          | Some(_) -> let str = "fname = %e:original_exp; \
+                serialize(&fname, fd);" in
+            Formatcil.cStmts str 
             (fun n t -> makeTempVar fd ~name:n t) locUnknown
             [ ("fd", Fv(fd_va)) ; 
-              ("ptr", Fv(ptr_va));  
+              (*("ptr", Fv(ptr_va));*)  
+              ("original_exp", Fe(Lval((Mem(ptr_va_exp),
+              Field(fi,NoOffset)))));
+              ("serialize", Fv((serializeFd).svar)) ;
+              ("fname",Fv(makeTempVar fd ~name:fname ftype));
+              ] 
+
+          | None -> let str = "serialize(%e:exp_with_cast , fd);" in
+            Formatcil.cStmts str 
+            (fun n t -> makeTempVar fd ~name:n t) locUnknown
+            [ ("fd", Fv(fd_va)) ; 
               ("exp_with_cast", Fe(final_exp));
               ("serialize", Fv((serializeFd).svar)) ;
               ] 
-        ) ci.cfields 
+        ) ci.cfields in 
+        List.fold_left (fun acc l -> acc @ l) [] list_of_list
+        (* ci.cstruct= False -> Union*)
+
+      | TComp(ci, _) when not ( ci.cstruct) ->
+                (* This gets called for a union *)
+              let max_size =
+              List.fold_left (fun acc union_option->let t = union_option.ftype in
+              max acc (bitsSizeOf t)) 0 ci.cfields in
+                Printf.printf "Max_size = %d\n" max_size;
+                let innerUnionName unionsize = Printf.sprintf "union%d" unionsize in
+                
+                let serializeName = "__serialize_" ^ (innerUnionName max_size) in
+                let str = Printf.sprintf "write(fd, ptr, %d);" (max_size/8) in
+                 Formatcil.cStmts str
+                    (fun n t -> makeTempVar fd ~name:n t) locUnknown
+                    [   ("write", Fv(Hashtbl.find globals "write")) ;
+                        ("fd", Fv(fd_va));
+                        ("ptr", Fv(ptr_va)) ;
+                     ]
+            
+              
+            
+           
+                
+              (*exit 1*)
+
 
       | TArray(basetype,Some(sizeExp),_) -> 
         createSerializeCode basetype ; 
@@ -198,8 +238,9 @@ let rec createDeserializeCode typ = begin
             ("deserialize", Fv( (Hashtbl.find createdSerializeCode deserializeName).svar)) ;
             ]
 
-      | TComp(ci,_) -> 
-        List.map (fun fi ->
+      | TComp(ci,_) when ci.cstruct->
+              
+        let list_of_list = List.map (fun fi ->
           let fname = fi.fname in 
           let ftype = fi.ftype in 
           createDeserializeCode ftype ; 
@@ -210,7 +251,7 @@ let rec createDeserializeCode typ = begin
           let deserializeFd = Hashtbl.find createdSerializeCode deserializeName in 
           let first_formal = List.hd deserializeFd.sformals in 
           let first_formal_type = first_formal.vtype in
-          let str = "deserialize(%e:exp_with_cast , fd);" in
+
           let my_type = first_formal_type in
           let ptr_va_exp = Lval((Var ptr_va), NoOffset) in 
           let original_exp = mkAddrOf ( 
@@ -219,14 +260,27 @@ let rec createDeserializeCode typ = begin
                ) in 
           let final_exp = CastE(my_type, original_exp) in
 
-          Formatcil.cStmt str 
+          match fi.fbitfield with 
+          | Some(_) -> let str = "deserialize(&fname,fd); %l:original_exp = fname;" in
+            Formatcil.cStmts str 
+            (fun n t -> makeTempVar fd ~name:n t) locUnknown
+            [ ("fd", Fv(fd_va)) ; 
+              (*("ptr", Fv(ptr_va));*)  
+              ("original_exp", Fl((Mem(ptr_va_exp),
+              Field(fi, NoOffset))));
+              ("deserialize", Fv((deserializeFd).svar)) ;
+              ("fname", Fv(makeTempVar fd ~name:fname ftype));
+              ]
+          | None -> let str = "deserialize(%e:exp_with_cast , fd);" in
+          Formatcil.cStmts str 
             (fun n t -> makeTempVar fd ~name:n t) locUnknown
             [ ("fd", Fv(fd_va)) ; 
               ("ptr", Fv(ptr_va));  
               ("exp_with_cast", Fe(final_exp));
               ("deserialize", Fv((deserializeFd).svar)) ;
               ] 
-        ) ci.cfields 
+        ) ci.cfields in
+        List.fold_left (fun acc l -> acc @ l) [] list_of_list
 
 
           (*Formatcil.cStmt str 
@@ -236,7 +290,24 @@ let rec createDeserializeCode typ = begin
               ("deserialize", Fv((Hashtbl.find createdSerializeCode deserializeName).svar)) ;
               ] 
         ) ci.cfields *)
-
+        | TComp(ci, _) when not ( ci.cstruct) ->
+                (* This gets called for a union *)
+              let max_size =
+              List.fold_left (fun acc union_option->let t = union_option.ftype in
+              max acc (bitsSizeOf t)) 0 ci.cfields in
+                Printf.printf "Max_size = %d\n" max_size;
+                let innerUnionName unionsize = Printf.sprintf "union%d" unionsize in
+                
+                let serializeName = "__deserialize_" ^ (innerUnionName max_size) in
+                let str = Printf.sprintf "read(fd, ptr, %d);" (max_size/8) in
+                 Formatcil.cStmts str
+                    (fun n t -> makeTempVar fd ~name:n t) locUnknown
+                    [   ("read", Fv(Hashtbl.find globals "read")) ;
+                        ("fd", Fv(fd_va));
+                        ("ptr", Fv(ptr_va)) ;
+                     ]
+            
+       
       | TArray(basetype,Some(sizeExp),_) -> 
         createDeserializeCode basetype ; 
         let deserializeName = deserializeFunctionName basetype in
@@ -303,7 +374,7 @@ class addSerializeVisitor target_variable_name
       in 
       createSerializeCode typ ; 
       let serializeName = serializeFunctionName typ in
-      let str = "{ int fd ; fd = open(%g:filename, 514, 0770); memoizeMax = 0; serialize(& myvar, fd); close(fd); }" in 
+      let str = "{ int fd ; fd = open(%g:filename, 0102, 0770); memoizeMax = 0; serialize(& myvar, fd); close(fd); }" in 
       let stmts = Formatcil.cStmts str 
         (fun n t -> makeTempVar fundec ~name:n t) locUnknown
         [ ("open", Fv(Hashtbl.find globals "open")) ; 
@@ -326,7 +397,7 @@ class addSerializeVisitor target_variable_name
       in 
       createDeserializeCode typ ; 
       let deserializeName = deserializeFunctionName typ in
-      let str = "{ int fd ; fd = open(%g:filename, 514, 0770); memoizeMax = 0; deserialize(& myvar, fd); close(fd); }" in 
+      let str = "{ int fd ; fd = open(%g:filename, 0102, 0770); memoizeMax = 0; deserialize(& myvar, fd); close(fd); }" in 
       let stmts = Formatcil.cStmts str 
         (fun n t -> makeTempVar fundec ~name:n t) locUnknown
         [ ("open", Fv(Hashtbl.find globals "open")) ; 

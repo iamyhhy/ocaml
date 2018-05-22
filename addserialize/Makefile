@@ -14,7 +14,8 @@ addserialize: addserialize.ml
 test: addserialize
 	$(RM) serialized.data hello.i hello_out.c hello_out
 	gcc -E hello.c > hello.i
-	./addserialize --variable lptr --serialize SERIALIZE --deserialize DESERIALIZE hello.i 
+	#./addserialize --variable lptr --serialize SERIALIZE --deserialize DESERIALIZE hello.i 
+	./addserialize --variable myStruct --serialize SERIALIZE --deserialize DESERIALIZE hello.i 
 	gcc -o hello_out hello_out.c
 	./hello_out < hello.test_input
 	./hello_out < /dev/null
