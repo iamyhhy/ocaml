@@ -1,6 +1,7 @@
 PATH_TO_CIL = ~/.opam/system/lib/cil
 OCAMLOPT = ocamlopt -I $(PATH_TO_CIL)
 ADDSERIALIZE = ./addserialize
+STRUCT = yu
 
 add: addserialize
 
@@ -10,8 +11,8 @@ addserialize: ../addserialize/addserialize.ml
 
 # generate the yu_out.c that contains all the __serialize__ and  __deserilize__ functions 
 test: addserialize
-	$(RM) yu.out
-	$(ADDSERIALIZE) --variable myCopter --serialize SERIALIZE --deserialize DESERIALIZE yu.i
+	$(RM) $(STRUCT)_out.c
+	$(ADDSERIALIZE) --variable myStruct --serialize SERIALIZE --deserialize DESERIALIZE $(STRUCT).i
 
 clean:
 	$(RM) addserialize *.cm? 

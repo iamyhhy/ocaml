@@ -5,10 +5,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 struct yu{
-
-    int x;
-    int y;
-    int z;
+    int * iptr;
     int m;
     int n;
 };
@@ -16,13 +13,16 @@ struct yu{
 struct union_test {
     int x;
     int y;
-  union Content {
-      int v1;
+  union {
       int v2;
       float v3;
-      long v4;
       struct yu v5; /* &v5 == 0x1000 */
-  }Content;
+  };
+
+  struct s2 {
+      int p;
+      int q;
+  };
 };
 
 int main () {

@@ -25,7 +25,7 @@ How to run yu.i?
 2. In yu.i, add a main() like this:
 
 int main(){
-    struct Copter myCopter;
+    struct Copter myStruct;
 
     {
         SERIALIZE:
@@ -40,7 +40,8 @@ int main(){
 
 
 3. Run addserialize: 
-./addserialize --variable myCopter --serialize SERIALIZE --deserialize DESERIALIZE yu.i  ------ make test
+./addserialize --variable myStruct --serialize SERIALIZE --deserialize
+DESERIALIZE yu.i  ------ make test
 
 Then you will have an output: yu_out.c
 

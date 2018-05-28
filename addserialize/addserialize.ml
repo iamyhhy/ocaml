@@ -240,12 +240,16 @@ let rec createDeserializeCode typ = begin
 
       | TComp(ci,_) when ci.cstruct->
               
+         Printf.printf "\t WE ARE IN ci.cname: %s (has %d fields)\n"
+         ci.cname (List.length ci.cfields);
         let list_of_list = List.map (fun fi ->
           let fname = fi.fname in 
           let ftype = fi.ftype in 
           createDeserializeCode ftype ; 
          (* let str = Printf.sprintf "deserialize(&(ptr->%s) ,fd);"
           * fname in*)
+         Printf.printf "\t current ci.cname: %s\n" ci.cname;
+         Printf.printf "\t current field: %s\n" fi.fname;
           let deserializeName = deserializeFunctionName ftype in
 
           let deserializeFd = Hashtbl.find createdSerializeCode deserializeName in 

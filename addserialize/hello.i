@@ -3321,53 +3321,36 @@ extern int posix_fallocate (int __fd, off_t __offset, off_t __len);
 
 # 7 "hello.c" 2
 
-
-# 8 "hello.c"
+# 7 "hello.c"
 struct yu{
-    int x;
+    int * iptr;
+    int m;
+    int n;
 };
 
-struct list_node {
-  int head;
-  struct list_node * tail;
-  struct list_node * self1, *self2;
-  struct yu y;
+struct union_test {
+    int x;
+    int y;
+  union {
+      int v2;
+      float v3;
+      struct yu v5;
+  };
+
+  struct s2 {
+      int p;
+      int q;
+  };
 };
 
 int main () {
-  struct list_node * lptr = 
-# 20 "hello.c" 3 4
-                           ((void *)0)
-# 20 "hello.c"
-                               ;
-
-  while (1) {
-      int data;
-      struct list_node * old = lptr;
-      scanf(" %d", &data);
-      if (data <= 0) break;
-
-      lptr = malloc(sizeof(*lptr));
-      lptr->head = data;
-      lptr->tail = old ;
-      lptr->self1 = lptr ;
-      lptr->self2 = lptr ;
+  struct union_test myStruct;
+  {
+    SERIALIZE:
   }
-
-  if (lptr == 
-# 35 "hello.c" 3 4
-             ((void *)0)
-# 35 "hello.c"
-                 ) {
-DESERIALIZE:
-  } else {
-SERIALIZE:
+  {
+    DESERIALIZE:
   }
-
-  for (; lptr; lptr=lptr->tail) {
-      printf("%d %p %p\n", lptr->head, lptr->self1, lptr->self2);
-  }
-
+# 45 "hello.c"
   return 0;
-
 }

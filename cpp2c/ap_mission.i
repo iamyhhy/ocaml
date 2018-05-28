@@ -18,7 +18,37 @@ typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
- 
+
+
+
+// the Location struct
+struct __attribute__((__packed__)) Location_Option_Flags {
+    uint8_t relative_alt : 1;           // 1 if altitude is relative to home
+    uint8_t unused1      : 1;           // unused flag (defined so that loiter_ccw uses the correct bit)
+    uint8_t loiter_ccw   : 1;           // 0 if clockwise, 1 if counter clockwise
+    uint8_t terrain_alt  : 1;           // this altitude is above terrain
+    uint8_t origin_alt   : 1;           // this altitude is above ekf origin
+    uint8_t loiter_xtrack : 1;          // 0 to crosstrack from center of waypoint, 1 to crosstrack from tangent exit location
+};
+
+typedef struct Location_Option_Flags Location_Option_Flags;
+
+struct __attribute__((__packed__)) Location {
+    union {
+        Location_Option_Flags flags;                    ///< options bitmask (1<<0 = relative altitude)
+        uint8_t options;                                /// allows writing all flags to eeprom as one byte
+    };
+    // by making alt 24 bit we can make p1 in a command 16 bit,
+    // allowing an accurate angle in centi-degrees. This keeps the
+    // storage cost per mission item at 15 bytes, and allows mission
+    // altitudes of up to +/- 83km
+    int32_t alt:24;                                     ///< param 2 - Altitude in centimeters (meters * 100) see LOCATION_ALT_MAX_M
+    int32_t lat;                                        ///< param 3 - Latitude * 10**7
+    int32_t lng;                                        ///< param 4 - Longitude * 10**7
+};
+
+typedef struct Location Location;
+
 // the struct of AP_AHRS
 struct AP_AHRS
 {
@@ -637,7 +667,7 @@ protected:
     //Vector2f _lastGndVelADS;
 
 
-   // struct Location _home;
+    struct Location _home;
 
 
     float _cos_roll, _cos_pitch, _cos_yaw;
@@ -654,6 +684,7 @@ protected:
     uint32_t _last_AOA_update_ms;
 };
 
+
 typedef struct AP_AHRS AP_AHRS;
 
     enum mission_state {
@@ -667,26 +698,25 @@ typedef struct AP_AHRS AP_AHRS;
 
 
 // AP_Mission
-
-//class AP_Mission {
-struct AP_Mission{
-//public:
-/*
-    struct __attribute__((__packed__)) Jump_Command {
+ struct __attribute__((__packed__)) Jump_Command {
         uint16_t target;
         int16_t num_times;
     };
 
+    typedef struct Jump_Command Jump_Command;
 
-    struct __attribute__((__packed__)) Conditional_Delay_Command {
+struct __attribute__((__packed__)) Conditional_Delay_Command {
         float seconds;
     };
+    
+    typedef struct Conditional_Delay_Command Conditional_Delay_Command;
 
 
     struct __attribute__((__packed__)) Conditional_Distance_Command {
         float meters;
     };
 
+    typedef struct Conditional_Distance_Command  Conditional_Distance_Command; 
 
     struct __attribute__((__packed__)) Yaw_Command {
         float angle_deg;
@@ -695,6 +725,7 @@ struct AP_Mission{
         uint8_t relative_angle;
     };
 
+    typedef struct  Yaw_Command Yaw_Command;
 
     struct __attribute__((__packed__)) Change_Speed_Command {
         uint8_t speed_type;
@@ -702,12 +733,14 @@ struct AP_Mission{
         float throttle_pct;
     };
 
+    typedef struct Change_Speed_Command Change_Speed_Command;
 
     struct __attribute__((__packed__)) Set_Relay_Command {
         uint8_t num;
         uint8_t state;
     };
 
+    typedef struct Set_Relay_Command Set_Relay_Command;
 
     struct __attribute__((__packed__)) Repeat_Relay_Command {
         uint8_t num;
@@ -715,12 +748,14 @@ struct AP_Mission{
         float cycle_time;
     };
 
+    typedef struct  Repeat_Relay_Command Repeat_Relay_Command;
 
     struct __attribute__((__packed__)) Set_Servo_Command {
         uint8_t channel;
         uint16_t pwm;
     };
 
+    typedef struct Set_Servo_Command Set_Servo_Command;
 
     struct __attribute__((__packed__)) Repeat_Servo_Command {
         uint8_t channel;
@@ -729,6 +764,7 @@ struct AP_Mission{
         float cycle_time;
     };
 
+    typedef struct  Repeat_Servo_Command Repeat_Servo_Command;
 
     struct __attribute__((__packed__)) Mount_Control {
         float pitch;
@@ -736,6 +772,7 @@ struct AP_Mission{
         float yaw;
     };
 
+    typedef struct Mount_Control Mount_Control;
 
     struct __attribute__((__packed__)) Digicam_Configure {
         uint8_t shooting_mode;
@@ -747,6 +784,7 @@ struct AP_Mission{
         float engine_cutoff_time;
     };
 
+    typedef struct  Digicam_Configure Digicam_Configure;
 
     struct __attribute__((__packed__)) Digicam_Control {
         uint8_t session;
@@ -757,17 +795,20 @@ struct AP_Mission{
         uint8_t cmd_id;
     };
 
+    typedef struct Digicam_Control Digicam_Control;
 
     struct __attribute__((__packed__)) Cam_Trigg_Distance {
         float meters;
     };
 
+    typedef struct  Cam_Trigg_Distance Cam_Trigg_Distance;
 
     struct __attribute__((__packed__)) Gripper_Command {
         uint8_t num;
         uint8_t action;
     };
 
+    typedef struct  Gripper_Command Gripper_Command;
 
     struct __attribute__((__packed__)) Altitude_Wait {
         float altitude;
@@ -775,6 +816,7 @@ struct AP_Mission{
         uint8_t wiggle_time;
     };
 
+    typedef struct  Altitude_Wait Altitude_Wait;
 
     struct __attribute__((__packed__)) Guided_Limits_Command {
 
@@ -783,11 +825,13 @@ struct AP_Mission{
         float horiz_max;
     };
 
+    typedef struct  Guided_Limits_Command Guided_Limits_Command;
 
     struct __attribute__((__packed__)) Do_VTOL_Transition {
         uint8_t target_state;
     };
 
+    typedef struct  Do_VTOL_Transition Do_VTOL_Transition;
 
     struct __attribute__((__packed__)) Navigation_Delay_Command {
         float seconds;
@@ -796,6 +840,7 @@ struct AP_Mission{
         int8_t sec_utc;
     };
 
+    typedef struct  Navigation_Delay_Command Navigation_Delay_Command;
 
     struct __attribute__((__packed__)) Do_Engine_Control {
         bool start_control;
@@ -803,6 +848,7 @@ struct AP_Mission{
         uint16_t height_delay_cm;
     };
 
+    typedef struct  Do_Engine_Control Do_Engine_Control;
 
     struct __attribute__((__packed__)) Set_Yaw_Speed {
         float angle_deg;
@@ -810,6 +856,7 @@ struct AP_Mission{
         uint8_t relative_angle;
     };
 
+    typedef struct  Set_Yaw_Speed Set_Yaw_Speed;
 
     struct __attribute__((__packed__)) Winch_Command {
         uint8_t num;
@@ -817,8 +864,11 @@ struct AP_Mission{
         float release_length;
         float release_rate;
     };
-*/
-/*
+
+
+    typedef struct  Winch_Command Winch_Command;
+
+
     union __attribute__((__packed__)) Content {
 
         Jump_Command jump;
@@ -890,13 +940,21 @@ struct AP_Mission{
 
         uint8_t bytes[12];
     };
-*/
+   typedef union Content Content;
 
+
+//class AP_Mission {
+struct AP_Mission{
+//public:
+
+   
+
+   
     struct Mission_Command {
         uint16_t index;
         uint16_t id;
         uint16_t p1;
- //       Content content;
+       Content content;
 
 
         //const char *type() const;
@@ -1152,8 +1210,9 @@ struct AP_Mission{
 
 
 // TODO!!!
- // const AP_AHRS& _ahrs;
- // const AP_AHRS * _ahrs;
+  //const AP_AHRS& _ahrs;
+  //const AP_AHRS * _ahrs;
+  const AP_AHRS  _ahrs;
 
 // AP_ParamT object
     //AP_Int16 _cmd_total;
@@ -1188,7 +1247,7 @@ struct AP_Mission{
 
 int main(){
 
-    struct AP_Mission myApMission;
+    struct AP_Mission myStruct;
 
     {
         SERIALIZE:

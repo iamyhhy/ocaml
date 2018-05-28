@@ -872,25 +872,27 @@ struct flock {
 };
 #line 7 "hello.c"
 struct yu {
-   int x ;
-   int y ;
-   int z ;
+   int *iptr ;
    int m ;
    int n ;
 };
-#line 16 "hello.c"
-union Content {
-   int v1 ;
+#line 13 "hello.c"
+union __anonunion____missing_field_name_28 {
    int v2 ;
    float v3 ;
-   long v4 ;
    struct yu v5 ;
 };
-#line 16 "hello.c"
+#line 13 "hello.c"
+struct s2 {
+   int p ;
+   int q ;
+};
+#line 13 "hello.c"
 struct union_test {
    int x ;
    int y ;
-   union Content Content ;
+   union __anonunion____missing_field_name_28 __annonCompField1 ;
+   struct s2 __annonCompField2 ;
 };
 /* compiler builtin: 
    void __builtin_va_copy(__builtin_va_list  , __builtin_va_list  ) ;  */
@@ -2233,18 +2235,23 @@ extern  __attribute__((__nothrow__)) int ( __attribute__((__leaf__)) posix_fadvi
                                                                                     int __advise ) ;
 #line 270
 extern int posix_fallocate(int __fd , off_t __offset , off_t __len ) ;
-void __serialize_Content(union Content *ptr , int fd ) ;
+void __serialize_s2(struct s2 *ptr , int fd ) ;
 void __deserialize_union_test(struct union_test *ptr , int fd ) ;
-void __deserialize_Content(union Content *ptr , int fd ) ;
 void __serialize_union_test(struct union_test *ptr , int fd ) ;
 void __deserialize_scalarInt32(int *ptr , int fd ) ;
+void __serialize___anonunion____missing_field_name_28(union __anonunion____missing_field_name_28 *ptr ,
+                                                      int fd ) ;
 void __serialize_scalarInt32(int *ptr , int fd ) ;
-void __serialize_Content(union Content *ptr , int fd ) 
+void __deserialize___anonunion____missing_field_name_28(union __anonunion____missing_field_name_28 *ptr ,
+                                                        int fd ) ;
+void __deserialize_s2(struct s2 *ptr , int fd ) ;
+void __serialize_s2(struct s2 *ptr , int fd ) 
 { 
 
 
   {
-  write(fd, ptr, 20);
+  __serialize_scalarInt32((int *)(& ptr->p), fd);
+  __serialize_scalarInt32((int *)(& ptr->q), fd);
 }
 }
 void __deserialize_union_test(struct union_test *ptr , int fd ) 
@@ -2254,15 +2261,9 @@ void __deserialize_union_test(struct union_test *ptr , int fd )
   {
   __deserialize_scalarInt32((int *)(& ptr->x), fd);
   __deserialize_scalarInt32((int *)(& ptr->y), fd);
-  __deserialize_Content((union Content *)(& ptr->Content), fd);
-}
-}
-void __deserialize_Content(union Content *ptr , int fd ) 
-{ 
-
-
-  {
-  read(fd, ptr, 20);
+  __deserialize___anonunion____missing_field_name_28((union __anonunion____missing_field_name_28 *)(& ptr->__annonCompField1),
+                                                     fd);
+  __deserialize_s2((struct s2 *)(& ptr->__annonCompField2), fd);
 }
 }
 void __serialize_union_test(struct union_test *ptr , int fd ) 
@@ -2272,7 +2273,9 @@ void __serialize_union_test(struct union_test *ptr , int fd )
   {
   __serialize_scalarInt32((int *)(& ptr->x), fd);
   __serialize_scalarInt32((int *)(& ptr->y), fd);
-  __serialize_Content((union Content *)(& ptr->Content), fd);
+  __serialize___anonunion____missing_field_name_28((union __anonunion____missing_field_name_28 *)(& ptr->__annonCompField1),
+                                                   fd);
+  __serialize_s2((struct s2 *)(& ptr->__annonCompField2), fd);
 }
 }
 void __deserialize_scalarInt32(int *ptr , int fd ) 
@@ -2283,6 +2286,15 @@ void __deserialize_scalarInt32(int *ptr , int fd )
   read(fd, ptr, 4);
 }
 }
+void __serialize___anonunion____missing_field_name_28(union __anonunion____missing_field_name_28 *ptr ,
+                                                      int fd ) 
+{ 
+
+
+  {
+
+}
+}
 void __serialize_scalarInt32(int *ptr , int fd ) 
 { 
 
@@ -2291,25 +2303,30 @@ void __serialize_scalarInt32(int *ptr , int fd )
   write(fd, ptr, 4);
 }
 }
+void __deserialize___anonunion____missing_field_name_28(union __anonunion____missing_field_name_28 *ptr ,
+                                                        int fd ) 
+{ 
+
+
+  {
+
+}
+}
+void __deserialize_s2(struct s2 *ptr , int fd ) 
+{ 
+
+
+  {
+  __deserialize_scalarInt32((int *)(& ptr->p), fd);
+  __deserialize_scalarInt32((int *)(& ptr->q), fd);
+}
+}
 #line 28 "hello.c"
 int main(void) 
 { 
   struct union_test myStruct ;
   int fd2 ;
   int fd3 ;
-  myStruct.x=1;
-  myStruct.y=2;
-  
-
-  struct yu myyu;
-  myyu.x=7;
-  myyu.y=8;
-  myyu.z=9;
-  myyu.m=10;
-  myyu.n=11;
-  myStruct.Content.v5=myyu;
-
-
 
   {
   {
@@ -2324,25 +2341,12 @@ int main(void)
   {
   DESERIALIZE: ;
   {
-  myStruct.x=12;
-  myStruct.y=13;
-  
-struct yu myyu2;
-  myyu2.x=14;
-  myyu2.y=15;
-  myyu2.z=16;
-  myyu2.m=17;
-  myyu2.n=18;
-  myStruct.Content.v5 = myyu2;
-
   fd3 = open("serialized.data", 66, 504);
   _memoizeMax = 0;
   __deserialize_union_test(& myStruct, fd3);
   close(fd3);
   }
   }
-
-  printf("x=%d, y=%d, content.x = %d, content.y=%d, content.z = %d, content.m=%d, content.n = %d\n", myStruct.x, myStruct.y, myStruct.Content.v5.x, myStruct.Content.v5.y, myStruct.Content.v5.z, myStruct.Content.v5.m, myStruct.Content.v5.n);
 #line 45
   return (0);
 }

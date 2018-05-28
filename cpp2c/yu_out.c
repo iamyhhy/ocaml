@@ -112,30 +112,300 @@ enum mode_reason_t {
 } ;
 #line 83 "yu.i"
 typedef enum mode_reason_t mode_reason_t;
-#line 86
+#line 88 "yu.i"
+struct Location_Option_Flags {
+   uint8_t relative_alt : 1 ;
+   uint8_t unused1 : 1 ;
+   uint8_t loiter_ccw : 1 ;
+   uint8_t terrain_alt : 1 ;
+   uint8_t origin_alt : 1 ;
+   uint8_t loiter_xtrack : 1 ;
+} __attribute__((__packed__)) ;
+#line 97 "yu.i"
+typedef struct Location_Option_Flags Location_Option_Flags;
+#line 99 "yu.i"
+union CompField1 {
+   Location_Option_Flags flags ;
+   uint8_t options ;
+};
+#line 103 "yu.i"
+typedef union CompField1 CompField1;
+#line 104 "yu.i"
+struct Location {
+   CompField1 compField1 ;
+   int32_t alt : 24 ;
+   int32_t lat ;
+   int32_t lng ;
+};
+#line 115 "yu.i"
+typedef struct Location Location;
+#line 118 "yu.i"
+struct ahrs_flags {
+   uint8_t have_initial_yaw : 1 ;
+   uint8_t fly_forward : 1 ;
+   uint8_t correct_centrifugal : 1 ;
+   uint8_t wind_estimation : 1 ;
+   uint8_t likely_flying : 1 ;
+};
+#line 118 "yu.i"
+struct AP_AHRS {
+   float roll ;
+   float pitch ;
+   float yaw ;
+   int32_t roll_sensor ;
+   int32_t pitch_sensor ;
+   int32_t yaw_sensor ;
+   float _kp_yaw ;
+   float _kp ;
+   float gps_gain ;
+   float beta ;
+   int8_t _gps_use ;
+   int8_t _wind_max ;
+   int8_t _board_orientation ;
+   int8_t _gps_minsats ;
+   int8_t _gps_delay ;
+   int8_t _ekf_type ;
+   struct ahrs_flags _flags ;
+   uint32_t _last_flying_ms ;
+   uint32_t _compass_last_update ;
+   float _gyro_drift_limit ;
+   struct Location _home ;
+   float _cos_roll ;
+   float _cos_pitch ;
+   float _cos_yaw ;
+   float _sin_roll ;
+   float _sin_pitch ;
+   float _sin_yaw ;
+   uint8_t _active_accel_instance ;
+   float _AOA ;
+   float _SSA ;
+   uint32_t _last_AOA_update_ms ;
+};
+#line 753 "yu.i"
+typedef struct AP_AHRS AP_AHRS;
+#line 755
 enum mission_state {
     MISSION_STOPPED = 0,
     MISSION_RUNNING = 1,
     MISSION_COMPLETE = 2
 } ;
-#line 92 "yu.i"
+#line 761 "yu.i"
 typedef enum mission_state mission_state;
-#line 97 "yu.i"
+#line 766 "yu.i"
+struct Jump_Command {
+   uint16_t target ;
+   int16_t num_times ;
+} __attribute__((__packed__)) ;
+#line 771 "yu.i"
+typedef struct Jump_Command Jump_Command;
+#line 773 "yu.i"
+struct Conditional_Delay_Command {
+   float seconds ;
+} __attribute__((__packed__)) ;
+#line 777 "yu.i"
+typedef struct Conditional_Delay_Command Conditional_Delay_Command;
+#line 780 "yu.i"
+struct Conditional_Distance_Command {
+   float meters ;
+} __attribute__((__packed__)) ;
+#line 784 "yu.i"
+typedef struct Conditional_Distance_Command Conditional_Distance_Command;
+#line 786 "yu.i"
+struct Yaw_Command {
+   float angle_deg ;
+   float turn_rate_dps ;
+   int8_t direction ;
+   uint8_t relative_angle ;
+} __attribute__((__packed__)) ;
+#line 793 "yu.i"
+typedef struct Yaw_Command Yaw_Command;
+#line 795 "yu.i"
+struct Change_Speed_Command {
+   uint8_t speed_type ;
+   float target_ms ;
+   float throttle_pct ;
+} __attribute__((__packed__)) ;
+#line 801 "yu.i"
+typedef struct Change_Speed_Command Change_Speed_Command;
+#line 803 "yu.i"
+struct Set_Relay_Command {
+   uint8_t num ;
+   uint8_t state ;
+} __attribute__((__packed__)) ;
+#line 808 "yu.i"
+typedef struct Set_Relay_Command Set_Relay_Command;
+#line 810 "yu.i"
+struct Repeat_Relay_Command {
+   uint8_t num ;
+   int16_t repeat_count ;
+   float cycle_time ;
+} __attribute__((__packed__)) ;
+#line 816 "yu.i"
+typedef struct Repeat_Relay_Command Repeat_Relay_Command;
+#line 818 "yu.i"
+struct Set_Servo_Command {
+   uint8_t channel ;
+   uint16_t pwm ;
+} __attribute__((__packed__)) ;
+#line 823 "yu.i"
+typedef struct Set_Servo_Command Set_Servo_Command;
+#line 825 "yu.i"
+struct Repeat_Servo_Command {
+   uint8_t channel ;
+   uint16_t pwm ;
+   int16_t repeat_count ;
+   float cycle_time ;
+} __attribute__((__packed__)) ;
+#line 832 "yu.i"
+typedef struct Repeat_Servo_Command Repeat_Servo_Command;
+#line 834 "yu.i"
+struct Mount_Control {
+   float pitch ;
+   float roll ;
+   float yaw ;
+} __attribute__((__packed__)) ;
+#line 840 "yu.i"
+typedef struct Mount_Control Mount_Control;
+#line 842 "yu.i"
+struct Digicam_Configure {
+   uint8_t shooting_mode ;
+   uint16_t shutter_speed ;
+   uint8_t aperture ;
+   uint16_t ISO ;
+   uint8_t exposure_type ;
+   uint8_t cmd_id ;
+   float engine_cutoff_time ;
+} __attribute__((__packed__)) ;
+#line 852 "yu.i"
+typedef struct Digicam_Configure Digicam_Configure;
+#line 854 "yu.i"
+struct Digicam_Control {
+   uint8_t session ;
+   uint8_t zoom_pos ;
+   int8_t zoom_step ;
+   uint8_t focus_lock ;
+   uint8_t shooting_cmd ;
+   uint8_t cmd_id ;
+} __attribute__((__packed__)) ;
+#line 863 "yu.i"
+typedef struct Digicam_Control Digicam_Control;
+#line 865 "yu.i"
+struct Cam_Trigg_Distance {
+   float meters ;
+} __attribute__((__packed__)) ;
+#line 869 "yu.i"
+typedef struct Cam_Trigg_Distance Cam_Trigg_Distance;
+#line 871 "yu.i"
+struct Gripper_Command {
+   uint8_t num ;
+   uint8_t action ;
+} __attribute__((__packed__)) ;
+#line 876 "yu.i"
+typedef struct Gripper_Command Gripper_Command;
+#line 878 "yu.i"
+struct Altitude_Wait {
+   float altitude ;
+   float descent_rate ;
+   uint8_t wiggle_time ;
+} __attribute__((__packed__)) ;
+#line 884 "yu.i"
+typedef struct Altitude_Wait Altitude_Wait;
+#line 886 "yu.i"
+struct Guided_Limits_Command {
+   float alt_min ;
+   float alt_max ;
+   float horiz_max ;
+} __attribute__((__packed__)) ;
+#line 893 "yu.i"
+typedef struct Guided_Limits_Command Guided_Limits_Command;
+#line 895 "yu.i"
+struct Do_VTOL_Transition {
+   uint8_t target_state ;
+} __attribute__((__packed__)) ;
+#line 899 "yu.i"
+typedef struct Do_VTOL_Transition Do_VTOL_Transition;
+#line 901 "yu.i"
+struct Navigation_Delay_Command {
+   float seconds ;
+   int8_t hour_utc ;
+   int8_t min_utc ;
+   int8_t sec_utc ;
+} __attribute__((__packed__)) ;
+#line 908 "yu.i"
+typedef struct Navigation_Delay_Command Navigation_Delay_Command;
+#line 910 "yu.i"
+struct Do_Engine_Control {
+   bool start_control ;
+   bool cold_start ;
+   uint16_t height_delay_cm ;
+} __attribute__((__packed__)) ;
+#line 916 "yu.i"
+typedef struct Do_Engine_Control Do_Engine_Control;
+#line 918 "yu.i"
+struct Set_Yaw_Speed {
+   float angle_deg ;
+   float speed ;
+   uint8_t relative_angle ;
+} __attribute__((__packed__)) ;
+#line 924 "yu.i"
+typedef struct Set_Yaw_Speed Set_Yaw_Speed;
+#line 926 "yu.i"
+struct Winch_Command {
+   uint8_t num ;
+   uint8_t action ;
+   float release_length ;
+   float release_rate ;
+} __attribute__((__packed__)) ;
+#line 934 "yu.i"
+typedef struct Winch_Command Winch_Command;
+#line 937 "yu.i"
+union Content {
+   Jump_Command jump ;
+   Conditional_Delay_Command delay ;
+   Conditional_Distance_Command distance ;
+   Yaw_Command yaw ;
+   Change_Speed_Command speed ;
+   Set_Relay_Command relay ;
+   Repeat_Relay_Command repeat_relay ;
+   Set_Servo_Command servo ;
+   Repeat_Servo_Command repeat_servo ;
+   Mount_Control mount_control ;
+   Digicam_Configure digicam_configure ;
+   Digicam_Control digicam_control ;
+   Cam_Trigg_Distance cam_trigg_dist ;
+   Gripper_Command gripper ;
+   Guided_Limits_Command guided_limits ;
+   Altitude_Wait altitude_wait ;
+   Do_VTOL_Transition do_vtol_transition ;
+   Do_Engine_Control do_engine_control ;
+   Navigation_Delay_Command nav_delay ;
+   Set_Yaw_Speed set_yaw_speed ;
+   Winch_Command winch ;
+   Location location ;
+   uint8_t bytes[12] ;
+} __attribute__((__packed__)) ;
+#line 1008 "yu.i"
+typedef union Content Content;
+#line 1010 "yu.i"
 struct Mission_Command {
    uint16_t index ;
    uint16_t id ;
    uint16_t p1 ;
+   Content content ;
 };
-#line 97 "yu.i"
+#line 1021
+struct Misson_Command;
+#line 1021 "yu.i"
+typedef struct Misson_Command Mission_Command;
+#line 1026 "yu.i"
 struct Mission_Flags {
    mission_state state ;
    uint8_t nav_cmd_loaded : 1 ;
    uint8_t do_cmd_loaded : 1 ;
    uint8_t do_cmd_all_done : 1 ;
 };
-#line 97 "yu.i"
+#line 1026 "yu.i"
 struct AP_Mission {
-   struct Mission_Command __annonCompField1 ;
    struct Mission_Flags _flags ;
    int16_t _cmd_total ;
    int8_t _restart ;
@@ -147,9 +417,9 @@ struct AP_Mission {
    uint16_t _prev_nav_cmd_wp_index ;
    uint32_t _last_change_time_ms ;
 };
-#line 613 "yu.i"
+#line 1312 "yu.i"
 typedef struct AP_Mission AP_Mission;
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct __anonstruct_rangefinder_state_3 {
    bool enabled : 1 ;
    bool alt_healthy : 1 ;
@@ -157,7 +427,7 @@ struct __anonstruct_rangefinder_state_3 {
    uint32_t last_healthy_ms ;
    int8_t glitch_count ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct __anonstruct____missing_field_name_5 {
    uint8_t unused1 : 1 ;
    uint8_t simple_mode : 2 ;
@@ -185,18 +455,18 @@ struct __anonstruct____missing_field_name_5 {
    uint8_t initialised_params : 1 ;
    uint8_t compass_init_location : 1 ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 union __anonunion_ap_t_4 {
-   struct __anonstruct____missing_field_name_5 __annonCompField2 ;
+   struct __anonstruct____missing_field_name_5 __annonCompField1 ;
    uint32_t value ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct __anonstruct_control_switch_state_6 {
    int8_t debounced_switch_position ;
    int8_t last_switch_position ;
    uint32_t last_edge_time_ms ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct __anonstruct_failsafe_7 {
    uint8_t rc_override_active : 1 ;
    uint8_t radio : 1 ;
@@ -210,23 +480,24 @@ struct __anonstruct_failsafe_7 {
    uint32_t terrain_first_failure_ms ;
    uint32_t terrain_last_failure_ms ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct __anonstruct_sensor_health_8 {
    uint8_t baro : 1 ;
    uint8_t compass : 1 ;
    uint8_t primary_gps ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct __anonstruct_gndeffect_state_9 {
    bool takeoff_expected ;
    bool touchdown_expected ;
    uint32_t takeoff_time_ms ;
    float takeoff_alt_cm ;
 };
-#line 642 "yu.i"
+#line 1343 "yu.i"
 struct Copter {
    uint8_t command_ack_counter ;
    struct __anonstruct_rangefinder_state_3 rangefinder_state ;
+   AP_Mission mission ;
    float ekfGndSpdLimit ;
    float ekfNavVelGainScaler ;
    int8_t ekf_primary_core ;
@@ -275,7 +546,6 @@ struct Copter {
    int16_t hover_roll_trim_scalar_slew ;
    struct __anonstruct_gndeffect_state_9 gndeffect_state ;
    bool upgrading_frame_params ;
-   AP_Mission *mission ;
 };
 /* compiler builtin: 
    void __builtin_va_copy(__builtin_va_list  , __builtin_va_list  ) ;  */
@@ -635,6 +905,7 @@ void __deserialize___anonstruct_rangefinder_state_3(struct __anonstruct_rangefin
 void __serialize___anonstruct_gndeffect_state_9(struct __anonstruct_gndeffect_state_9 *ptr ,
                                                 int fd ) ;
 void __deserialize_scalarInt16(short *ptr , int fd ) ;
+void __serialize_Content(union Content *ptr , int fd ) ;
 void __deserialize___anonstruct_sensor_health_8(struct __anonstruct_sensor_health_8 *ptr ,
                                                 int fd ) ;
 void __serialize_control_mode_t(enum control_mode_t *ptr , int fd ) ;
@@ -646,19 +917,17 @@ void __deserialize_mission_state(enum mission_state *ptr , int fd ) ;
 void __serialize_scalarInt8(unsigned char *ptr , int fd ) ;
 void __serialize___anonstruct_rangefinder_state_3(struct __anonstruct_rangefinder_state_3 *ptr ,
                                                   int fd ) ;
+void __deserialize_Content(union Content *ptr , int fd ) ;
 void __deserialize___anonstruct_control_switch_state_6(struct __anonstruct_control_switch_state_6 *ptr ,
                                                        int fd ) ;
 void __serialize_Copter(struct Copter *ptr , int fd ) ;
 void __deserialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) ;
-void __deserialize_ptr_AP_Mission(AP_Mission **ptr , int fd ) ;
 void __deserialize_Mission_Command(struct Mission_Command *ptr , int fd ) ;
 void __serialize_mode_reason_t(enum mode_reason_t *ptr , int fd ) ;
 void __deserialize___anonstruct_gndeffect_state_9(struct __anonstruct_gndeffect_state_9 *ptr ,
                                                   int fd ) ;
 void __deserialize_control_mode_t(enum control_mode_t *ptr , int fd ) ;
 void __deserialize_Copter(struct Copter *ptr , int fd ) ;
-void __serialize_ptr_AP_Mission(AP_Mission **ptr , int fd ) ;
-void __deserialize_HomeState(enum HomeState *ptr , int fd ) ;
 void __serialize___anonstruct_failsafe_7(struct __anonstruct_failsafe_7 *ptr , int fd ) ;
 void __deserialize_scalarInt32(unsigned int *ptr , int fd ) ;
 void __serialize_scalarFloat32(float *ptr , int fd ) ;
@@ -671,19 +940,15 @@ void __serialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) ;
 void __serialize_mission_state(enum mission_state *ptr , int fd ) ;
 void __deserialize_AP_Mission(struct AP_Mission *ptr , int fd ) ;
 void __serialize___anonunion_ap_t_4(union __anonunion_ap_t_4 *ptr , int fd ) ;
-void __deserialize___anonstruct____missing_field_name_5(struct __anonstruct____missing_field_name_5 *ptr ,
-                                                        int fd ) ;
 void __serialize_scalarInt16(short *ptr , int fd ) ;
-void __serialize_HomeState(enum HomeState *ptr , int fd ) ;
 void __serialize___anonstruct_control_switch_state_6(struct __anonstruct_control_switch_state_6 *ptr ,
                                                      int fd ) ;
 void __deserialize___anonstruct_failsafe_7(struct __anonstruct_failsafe_7 *ptr , int fd ) ;
-void __serialize___anonstruct____missing_field_name_5(struct __anonstruct____missing_field_name_5 *ptr ,
-                                                      int fd ) ;
 void __deserialize___anonstruct_rangefinder_state_3(struct __anonstruct_rangefinder_state_3 *ptr ,
                                                     int fd ) 
 { 
-
+  bool enabled3 ;
+  bool alt_healthy4 ;
 
   {
 
@@ -706,10 +971,19 @@ void __deserialize_scalarInt16(short *ptr , int fd )
   read(fd, ptr, 2);
 }
 }
+void __serialize_Content(union Content *ptr , int fd ) 
+{ 
+
+
+  {
+  write(fd, ptr, 12);
+}
+}
 void __deserialize___anonstruct_sensor_health_8(struct __anonstruct_sensor_health_8 *ptr ,
                                                 int fd ) 
 { 
-
+  uint8_t baro3 ;
+  uint8_t compass4 ;
 
   {
 
@@ -726,7 +1000,8 @@ void __serialize_control_mode_t(enum control_mode_t *ptr , int fd )
 void __serialize___anonstruct_sensor_health_8(struct __anonstruct_sensor_health_8 *ptr ,
                                               int fd ) 
 { 
-
+  uint8_t baro3 ;
+  uint8_t compass4 ;
 
   {
 
@@ -745,8 +1020,6 @@ void __serialize_AP_Mission(struct AP_Mission *ptr , int fd )
 
 
   {
-  __serialize_Mission_Command((struct Mission_Command *)(& ptr->__annonCompField1),
-                              fd);
   __serialize_Mission_Flags((struct Mission_Flags *)(& ptr->_flags), fd);
   __serialize_scalarInt16((short *)(& ptr->_cmd_total), fd);
   __serialize_scalarInt8((unsigned char *)(& ptr->_restart), fd);
@@ -778,10 +1051,19 @@ void __serialize_scalarInt8(unsigned char *ptr , int fd )
 void __serialize___anonstruct_rangefinder_state_3(struct __anonstruct_rangefinder_state_3 *ptr ,
                                                   int fd ) 
 { 
-
+  bool enabled3 ;
+  bool alt_healthy4 ;
 
   {
 
+}
+}
+void __deserialize_Content(union Content *ptr , int fd ) 
+{ 
+
+
+  {
+  read(fd, ptr, 12);
 }
 }
 void __deserialize___anonstruct_control_switch_state_6(struct __anonstruct_control_switch_state_6 *ptr ,
@@ -801,6 +1083,7 @@ void __serialize_Copter(struct Copter *ptr , int fd )
   __serialize_scalarInt8((unsigned char *)(& ptr->command_ack_counter), fd);
   __serialize___anonstruct_rangefinder_state_3((struct __anonstruct_rangefinder_state_3 *)(& ptr->rangefinder_state),
                                                fd);
+  __serialize_AP_Mission((struct AP_Mission *)(& ptr->mission), fd);
   __serialize_scalarFloat32((float *)(& ptr->ekfGndSpdLimit), fd);
   __serialize_scalarFloat32((float *)(& ptr->ekfNavVelGainScaler), fd);
   __serialize_scalarInt8((unsigned char *)(& ptr->ekf_primary_core), fd);
@@ -855,47 +1138,22 @@ void __serialize_Copter(struct Copter *ptr , int fd )
   __serialize___anonstruct_gndeffect_state_9((struct __anonstruct_gndeffect_state_9 *)(& ptr->gndeffect_state),
                                              fd);
   __serialize_scalarInt8((unsigned char *)(& ptr->upgrading_frame_params), fd);
-  __serialize_ptr_AP_Mission((AP_Mission **)(& ptr->mission), fd);
 }
 }
 void __deserialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) 
 { 
-
+  uint8_t nav_cmd_loaded3 ;
+  uint8_t do_cmd_loaded4 ;
+  uint8_t do_cmd_all_done5 ;
 
   {
   __deserialize_mission_state((enum mission_state *)(& ptr->state), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->nav_cmd_loaded), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->do_cmd_loaded), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->do_cmd_all_done), fd);
-}
-}
-void __deserialize_ptr_AP_Mission(AP_Mission **ptr , int fd ) 
-{ 
-  int i3 ;
-
-  {
-  read(fd, ptr, sizeof(*ptr));
-  if (*ptr != 0) {
-    {
-    i3 = 0;
-    while (i3 < _memoizeMax) {
-      {
-      if (_memoize[i3] == *ptr) {
-        {
-        *ptr = _memoize[i3 + 1];
-        return;
-        }
-      }
-      i3 += 2;
-      }
-    }
-    _memoize[_memoizeMax] = *ptr;
-    *ptr = malloc(44);
-    _memoize[_memoizeMax + 1] = *ptr;
-    _memoizeMax += 2;
-    __deserialize_AP_Mission(*ptr, fd);
-    }
-  }
+  __deserialize_scalarInt8(& nav_cmd_loaded3, fd);
+  ptr->nav_cmd_loaded = nav_cmd_loaded3;
+  __deserialize_scalarInt8(& do_cmd_loaded4, fd);
+  ptr->do_cmd_loaded = do_cmd_loaded4;
+  __deserialize_scalarInt8(& do_cmd_all_done5, fd);
+  ptr->do_cmd_all_done = do_cmd_all_done5;
 }
 }
 void __deserialize_Mission_Command(struct Mission_Command *ptr , int fd ) 
@@ -906,6 +1164,7 @@ void __deserialize_Mission_Command(struct Mission_Command *ptr , int fd )
   __deserialize_scalarInt16((short *)(& ptr->index), fd);
   __deserialize_scalarInt16((short *)(& ptr->id), fd);
   __deserialize_scalarInt16((short *)(& ptr->p1), fd);
+  __deserialize_Content((union Content *)(& ptr->content), fd);
 }
 }
 void __serialize_mode_reason_t(enum mode_reason_t *ptr , int fd ) 
@@ -941,6 +1200,7 @@ void __deserialize_Copter(struct Copter *ptr , int fd )
   __deserialize_scalarInt8((unsigned char *)(& ptr->command_ack_counter), fd);
   __deserialize___anonstruct_rangefinder_state_3((struct __anonstruct_rangefinder_state_3 *)(& ptr->rangefinder_state),
                                                  fd);
+  __deserialize_AP_Mission((struct AP_Mission *)(& ptr->mission), fd);
   __deserialize_scalarFloat32((float *)(& ptr->ekfGndSpdLimit), fd);
   __deserialize_scalarFloat32((float *)(& ptr->ekfNavVelGainScaler), fd);
   __deserialize_scalarInt8((unsigned char *)(& ptr->ekf_primary_core), fd);
@@ -997,44 +1257,17 @@ void __deserialize_Copter(struct Copter *ptr , int fd )
   __deserialize___anonstruct_gndeffect_state_9((struct __anonstruct_gndeffect_state_9 *)(& ptr->gndeffect_state),
                                                fd);
   __deserialize_scalarInt8((unsigned char *)(& ptr->upgrading_frame_params), fd);
-  __deserialize_ptr_AP_Mission((AP_Mission **)(& ptr->mission), fd);
-}
-}
-void __serialize_ptr_AP_Mission(AP_Mission **ptr , int fd ) 
-{ 
-  int i3 ;
-
-  {
-  write(fd, ptr, sizeof(*ptr));
-  if (*ptr != 0) {
-    {
-    i3 = 0;
-    while (i3 < _memoizeMax) {
-      {
-      if (_memoize[i3] == *ptr) {
-        return;
-      }
-      i3 ++;
-      }
-    }
-    _memoize[_memoizeMax] = *ptr;
-    _memoizeMax ++;
-    __serialize_AP_Mission(*ptr, fd);
-    }
-  }
-}
-}
-void __deserialize_HomeState(enum HomeState *ptr , int fd ) 
-{ 
-
-
-  {
-  read(fd, ptr, 4);
 }
 }
 void __serialize___anonstruct_failsafe_7(struct __anonstruct_failsafe_7 *ptr , int fd ) 
 { 
-
+  uint8_t rc_override_active3 ;
+  uint8_t radio4 ;
+  uint8_t battery5 ;
+  uint8_t gcs6 ;
+  uint8_t ekf7 ;
+  uint8_t terrain8 ;
+  uint8_t adsb9 ;
 
   {
 
@@ -1072,6 +1305,7 @@ void __serialize_Mission_Command(struct Mission_Command *ptr , int fd )
   __serialize_scalarInt16((short *)(& ptr->index), fd);
   __serialize_scalarInt16((short *)(& ptr->id), fd);
   __serialize_scalarInt16((short *)(& ptr->p1), fd);
+  __serialize_Content((union Content *)(& ptr->content), fd);
 }
 }
 void __serialize_scalarInt32(unsigned int *ptr , int fd ) 
@@ -1100,13 +1334,18 @@ void __deserialize_scalarInt8(unsigned char *ptr , int fd )
 }
 void __serialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) 
 { 
-
+  uint8_t nav_cmd_loaded3 ;
+  uint8_t do_cmd_loaded4 ;
+  uint8_t do_cmd_all_done5 ;
 
   {
   __serialize_mission_state((enum mission_state *)(& ptr->state), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->nav_cmd_loaded), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->do_cmd_loaded), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->do_cmd_all_done), fd);
+  nav_cmd_loaded3 = ptr->nav_cmd_loaded;
+  __serialize_scalarInt8(& nav_cmd_loaded3, fd);
+  do_cmd_loaded4 = ptr->do_cmd_loaded;
+  __serialize_scalarInt8(& do_cmd_loaded4, fd);
+  do_cmd_all_done5 = ptr->do_cmd_all_done;
+  __serialize_scalarInt8(& do_cmd_all_done5, fd);
 }
 }
 void __serialize_mission_state(enum mission_state *ptr , int fd ) 
@@ -1122,8 +1361,6 @@ void __deserialize_AP_Mission(struct AP_Mission *ptr , int fd )
 
 
   {
-  __deserialize_Mission_Command((struct Mission_Command *)(& ptr->__annonCompField1),
-                                fd);
   __deserialize_Mission_Flags((struct Mission_Flags *)(& ptr->_flags), fd);
   __deserialize_scalarInt16((short *)(& ptr->_cmd_total), fd);
   __deserialize_scalarInt8((unsigned char *)(& ptr->_restart), fd);
@@ -1144,29 +1381,12 @@ void __serialize___anonunion_ap_t_4(union __anonunion_ap_t_4 *ptr , int fd )
 
 }
 }
-void __deserialize___anonstruct____missing_field_name_5(struct __anonstruct____missing_field_name_5 *ptr ,
-                                                        int fd ) 
-{ 
-
-
-  {
-
-}
-}
 void __serialize_scalarInt16(short *ptr , int fd ) 
 { 
 
 
   {
   write(fd, ptr, 2);
-}
-}
-void __serialize_HomeState(enum HomeState *ptr , int fd ) 
-{ 
-
-
-  {
-  write(fd, ptr, 4);
 }
 }
 void __serialize___anonstruct_control_switch_state_6(struct __anonstruct_control_switch_state_6 *ptr ,
@@ -1180,25 +1400,22 @@ void __serialize___anonstruct_control_switch_state_6(struct __anonstruct_control
 }
 void __deserialize___anonstruct_failsafe_7(struct __anonstruct_failsafe_7 *ptr , int fd ) 
 { 
-
-
-  {
-
-}
-}
-void __serialize___anonstruct____missing_field_name_5(struct __anonstruct____missing_field_name_5 *ptr ,
-                                                      int fd ) 
-{ 
-
+  uint8_t rc_override_active3 ;
+  uint8_t radio4 ;
+  uint8_t battery5 ;
+  uint8_t gcs6 ;
+  uint8_t ekf7 ;
+  uint8_t terrain8 ;
+  uint8_t adsb9 ;
 
   {
 
 }
 }
-#line 2430 "yu.i"
+#line 3131 "yu.i"
 int main(void) 
 { 
-  struct Copter myCopter ;
+  struct Copter myStruct ;
   int fd2 ;
   int fd3 ;
 
@@ -1206,22 +1423,22 @@ int main(void)
   {
   SERIALIZE: ;
   {
-  fd2 = open("serialized.data", 514, 504);
+  fd2 = open("serialized.data", 66, 504);
   _memoizeMax = 0;
-  __serialize_Copter(& myCopter, fd2);
+  __serialize_Copter(& myStruct, fd2);
   close(fd2);
   }
   }
   {
   DESERIALIZE: ;
   {
-  fd3 = open("serialized.data", 514, 504);
+  fd3 = open("serialized.data", 66, 504);
   _memoizeMax = 0;
-  __deserialize_Copter(& myCopter, fd3);
+  __deserialize_Copter(& myStruct, fd3);
   close(fd3);
   }
   }
-#line 2439
+#line 3140
   return (0);
 }
 }

@@ -634,7 +634,7 @@ protected:
     //Vector2f _lastGndVelADS;
 
 
-   // struct Location _home;
+    struct Location _home;
 
 
     float _cos_roll, _cos_pitch, _cos_yaw;
@@ -650,3 +650,16 @@ protected:
     float _AOA, _SSA;
     uint32_t _last_AOA_update_ms;
 };
+
+int main(){
+    struct AP_AHRS myStruct;
+
+    {
+        SERIALIZE:
+    }
+    {
+        DESERIALIZE:
+    }
+
+    return 0;
+}

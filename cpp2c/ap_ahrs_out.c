@@ -8,64 +8,41 @@ int read(int fd , void *buf , int count ) ;
 int write(int fd , void *buf , int count ) ;
 int close(int fd ) ;
 void open ;
-#line 5 "ap_mission.i"
+#line 1 "ap_ahrs.i"
 typedef char bool;
-#line 6 "ap_mission.i"
+#line 2 "ap_ahrs.i"
 typedef unsigned char __uint8_t;
-#line 7 "ap_mission.i"
+#line 3 "ap_ahrs.i"
 typedef short __int16_t;
-#line 8 "ap_mission.i"
+#line 4 "ap_ahrs.i"
 typedef unsigned short __uint16_t;
-#line 9 "ap_mission.i"
+#line 5 "ap_ahrs.i"
 typedef int __int32_t;
-#line 10 "ap_mission.i"
+#line 6 "ap_ahrs.i"
 typedef unsigned int __uint32_t;
-#line 11 "ap_mission.i"
+#line 7 "ap_ahrs.i"
 typedef long long __int64_t;
-#line 12 "ap_mission.i"
+#line 8 "ap_ahrs.i"
 typedef unsigned long long __uint64_t;
-#line 13 "ap_mission.i"
+#line 9 "ap_ahrs.i"
 typedef signed char int8_t;
-#line 14 "ap_mission.i"
+#line 10 "ap_ahrs.i"
+typedef signed char int8_t___0;
+#line 11 "ap_ahrs.i"
 typedef short int16_t;
-#line 15 "ap_mission.i"
+#line 12 "ap_ahrs.i"
 typedef int int32_t;
-#line 16 "ap_mission.i"
+#line 13 "ap_ahrs.i"
 typedef long long int64_t;
-#line 17 "ap_mission.i"
+#line 14 "ap_ahrs.i"
 typedef unsigned char uint8_t;
-#line 18 "ap_mission.i"
+#line 15 "ap_ahrs.i"
 typedef unsigned short uint16_t;
-#line 19 "ap_mission.i"
+#line 16 "ap_ahrs.i"
 typedef unsigned int uint32_t;
-#line 20 "ap_mission.i"
+#line 17 "ap_ahrs.i"
 typedef unsigned long long uint64_t;
-#line 25 "ap_mission.i"
-struct Location_Option_Flags {
-   uint8_t relative_alt : 1 ;
-   uint8_t unused1 : 1 ;
-   uint8_t loiter_ccw : 1 ;
-   uint8_t terrain_alt : 1 ;
-   uint8_t origin_alt : 1 ;
-   uint8_t loiter_xtrack : 1 ;
-} __attribute__((__packed__)) ;
-#line 34 "ap_mission.i"
-typedef struct Location_Option_Flags Location_Option_Flags;
-#line 36 "ap_mission.i"
-union __anonunion____missing_field_name_1 {
-   Location_Option_Flags flags ;
-   uint8_t options ;
-};
-#line 36 "ap_mission.i"
-struct Location {
-   union __anonunion____missing_field_name_1 __annonCompField1 ;
-   int32_t alt : 24 ;
-   int32_t lat ;
-   int32_t lng ;
-} __attribute__((__packed__)) ;
-#line 50 "ap_mission.i"
-typedef struct Location Location;
-#line 53 "ap_mission.i"
+#line 20 "ap_ahrs.i"
 struct ahrs_flags {
    uint8_t have_initial_yaw : 1 ;
    uint8_t fly_forward : 1 ;
@@ -73,7 +50,7 @@ struct ahrs_flags {
    uint8_t wind_estimation : 1 ;
    uint8_t likely_flying : 1 ;
 };
-#line 53 "ap_mission.i"
+#line 20 "ap_ahrs.i"
 struct AP_AHRS {
    float roll ;
    float pitch ;
@@ -85,17 +62,16 @@ struct AP_AHRS {
    float _kp ;
    float gps_gain ;
    float beta ;
-   int8_t _gps_use ;
-   int8_t _wind_max ;
-   int8_t _board_orientation ;
-   int8_t _gps_minsats ;
-   int8_t _gps_delay ;
-   int8_t _ekf_type ;
+   int8_t___0 _gps_use ;
+   int8_t___0 _wind_max ;
+   int8_t___0 _board_orientation ;
+   int8_t___0 _gps_minsats ;
+   int8_t___0 _gps_delay ;
+   int8_t___0 _ekf_type ;
    struct ahrs_flags _flags ;
    uint32_t _last_flying_ms ;
    uint32_t _compass_last_update ;
    float _gyro_drift_limit ;
-   struct Location _home ;
    float _cos_roll ;
    float _cos_pitch ;
    float _cos_yaw ;
@@ -106,240 +82,6 @@ struct AP_AHRS {
    float _AOA ;
    float _SSA ;
    uint32_t _last_AOA_update_ms ;
-};
-#line 688 "ap_mission.i"
-typedef struct AP_AHRS AP_AHRS;
-#line 690
-enum mission_state {
-    MISSION_STOPPED = 0,
-    MISSION_RUNNING = 1,
-    MISSION_COMPLETE = 2
-} ;
-#line 696 "ap_mission.i"
-typedef enum mission_state mission_state;
-#line 701 "ap_mission.i"
-struct Jump_Command {
-   uint16_t target ;
-   int16_t num_times ;
-} __attribute__((__packed__)) ;
-#line 706 "ap_mission.i"
-typedef struct Jump_Command Jump_Command;
-#line 708 "ap_mission.i"
-struct Conditional_Delay_Command {
-   float seconds ;
-} __attribute__((__packed__)) ;
-#line 712 "ap_mission.i"
-typedef struct Conditional_Delay_Command Conditional_Delay_Command;
-#line 715 "ap_mission.i"
-struct Conditional_Distance_Command {
-   float meters ;
-} __attribute__((__packed__)) ;
-#line 719 "ap_mission.i"
-typedef struct Conditional_Distance_Command Conditional_Distance_Command;
-#line 721 "ap_mission.i"
-struct Yaw_Command {
-   float angle_deg ;
-   float turn_rate_dps ;
-   int8_t direction ;
-   uint8_t relative_angle ;
-} __attribute__((__packed__)) ;
-#line 728 "ap_mission.i"
-typedef struct Yaw_Command Yaw_Command;
-#line 730 "ap_mission.i"
-struct Change_Speed_Command {
-   uint8_t speed_type ;
-   float target_ms ;
-   float throttle_pct ;
-} __attribute__((__packed__)) ;
-#line 736 "ap_mission.i"
-typedef struct Change_Speed_Command Change_Speed_Command;
-#line 738 "ap_mission.i"
-struct Set_Relay_Command {
-   uint8_t num ;
-   uint8_t state ;
-} __attribute__((__packed__)) ;
-#line 743 "ap_mission.i"
-typedef struct Set_Relay_Command Set_Relay_Command;
-#line 745 "ap_mission.i"
-struct Repeat_Relay_Command {
-   uint8_t num ;
-   int16_t repeat_count ;
-   float cycle_time ;
-} __attribute__((__packed__)) ;
-#line 751 "ap_mission.i"
-typedef struct Repeat_Relay_Command Repeat_Relay_Command;
-#line 753 "ap_mission.i"
-struct Set_Servo_Command {
-   uint8_t channel ;
-   uint16_t pwm ;
-} __attribute__((__packed__)) ;
-#line 758 "ap_mission.i"
-typedef struct Set_Servo_Command Set_Servo_Command;
-#line 760 "ap_mission.i"
-struct Repeat_Servo_Command {
-   uint8_t channel ;
-   uint16_t pwm ;
-   int16_t repeat_count ;
-   float cycle_time ;
-} __attribute__((__packed__)) ;
-#line 767 "ap_mission.i"
-typedef struct Repeat_Servo_Command Repeat_Servo_Command;
-#line 769 "ap_mission.i"
-struct Mount_Control {
-   float pitch ;
-   float roll ;
-   float yaw ;
-} __attribute__((__packed__)) ;
-#line 775 "ap_mission.i"
-typedef struct Mount_Control Mount_Control;
-#line 777 "ap_mission.i"
-struct Digicam_Configure {
-   uint8_t shooting_mode ;
-   uint16_t shutter_speed ;
-   uint8_t aperture ;
-   uint16_t ISO ;
-   uint8_t exposure_type ;
-   uint8_t cmd_id ;
-   float engine_cutoff_time ;
-} __attribute__((__packed__)) ;
-#line 787 "ap_mission.i"
-typedef struct Digicam_Configure Digicam_Configure;
-#line 789 "ap_mission.i"
-struct Digicam_Control {
-   uint8_t session ;
-   uint8_t zoom_pos ;
-   int8_t zoom_step ;
-   uint8_t focus_lock ;
-   uint8_t shooting_cmd ;
-   uint8_t cmd_id ;
-} __attribute__((__packed__)) ;
-#line 798 "ap_mission.i"
-typedef struct Digicam_Control Digicam_Control;
-#line 800 "ap_mission.i"
-struct Cam_Trigg_Distance {
-   float meters ;
-} __attribute__((__packed__)) ;
-#line 804 "ap_mission.i"
-typedef struct Cam_Trigg_Distance Cam_Trigg_Distance;
-#line 806 "ap_mission.i"
-struct Gripper_Command {
-   uint8_t num ;
-   uint8_t action ;
-} __attribute__((__packed__)) ;
-#line 811 "ap_mission.i"
-typedef struct Gripper_Command Gripper_Command;
-#line 813 "ap_mission.i"
-struct Altitude_Wait {
-   float altitude ;
-   float descent_rate ;
-   uint8_t wiggle_time ;
-} __attribute__((__packed__)) ;
-#line 819 "ap_mission.i"
-typedef struct Altitude_Wait Altitude_Wait;
-#line 821 "ap_mission.i"
-struct Guided_Limits_Command {
-   float alt_min ;
-   float alt_max ;
-   float horiz_max ;
-} __attribute__((__packed__)) ;
-#line 828 "ap_mission.i"
-typedef struct Guided_Limits_Command Guided_Limits_Command;
-#line 830 "ap_mission.i"
-struct Do_VTOL_Transition {
-   uint8_t target_state ;
-} __attribute__((__packed__)) ;
-#line 834 "ap_mission.i"
-typedef struct Do_VTOL_Transition Do_VTOL_Transition;
-#line 836 "ap_mission.i"
-struct Navigation_Delay_Command {
-   float seconds ;
-   int8_t hour_utc ;
-   int8_t min_utc ;
-   int8_t sec_utc ;
-} __attribute__((__packed__)) ;
-#line 843 "ap_mission.i"
-typedef struct Navigation_Delay_Command Navigation_Delay_Command;
-#line 845 "ap_mission.i"
-struct Do_Engine_Control {
-   bool start_control ;
-   bool cold_start ;
-   uint16_t height_delay_cm ;
-} __attribute__((__packed__)) ;
-#line 851 "ap_mission.i"
-typedef struct Do_Engine_Control Do_Engine_Control;
-#line 853 "ap_mission.i"
-struct Set_Yaw_Speed {
-   float angle_deg ;
-   float speed ;
-   uint8_t relative_angle ;
-} __attribute__((__packed__)) ;
-#line 859 "ap_mission.i"
-typedef struct Set_Yaw_Speed Set_Yaw_Speed;
-#line 861 "ap_mission.i"
-struct Winch_Command {
-   uint8_t num ;
-   uint8_t action ;
-   float release_length ;
-   float release_rate ;
-} __attribute__((__packed__)) ;
-#line 869 "ap_mission.i"
-typedef struct Winch_Command Winch_Command;
-#line 872 "ap_mission.i"
-union Content {
-   Jump_Command jump ;
-   Conditional_Delay_Command delay ;
-   Conditional_Distance_Command distance ;
-   Yaw_Command yaw ;
-   Change_Speed_Command speed ;
-   Set_Relay_Command relay ;
-   Repeat_Relay_Command repeat_relay ;
-   Set_Servo_Command servo ;
-   Repeat_Servo_Command repeat_servo ;
-   Mount_Control mount_control ;
-   Digicam_Configure digicam_configure ;
-   Digicam_Control digicam_control ;
-   Cam_Trigg_Distance cam_trigg_dist ;
-   Gripper_Command gripper ;
-   Guided_Limits_Command guided_limits ;
-   Altitude_Wait altitude_wait ;
-   Do_VTOL_Transition do_vtol_transition ;
-   Do_Engine_Control do_engine_control ;
-   Navigation_Delay_Command nav_delay ;
-   Set_Yaw_Speed set_yaw_speed ;
-   Winch_Command winch ;
-   Location location ;
-   uint8_t bytes[12] ;
-} __attribute__((__packed__)) ;
-#line 943 "ap_mission.i"
-typedef union Content Content;
-#line 947 "ap_mission.i"
-struct Mission_Command {
-   uint16_t index ;
-   uint16_t id ;
-   uint16_t p1 ;
-   Content content ;
-};
-#line 947 "ap_mission.i"
-struct Mission_Flags {
-   mission_state state ;
-   uint8_t nav_cmd_loaded : 1 ;
-   uint8_t do_cmd_loaded : 1 ;
-   uint8_t do_cmd_all_done : 1 ;
-};
-#line 947 "ap_mission.i"
-struct AP_Mission {
-   struct Mission_Command __annonCompField2 ;
-   struct Mission_Flags _flags ;
-   AP_AHRS const   *_ahrs ;
-   int16_t _cmd_total ;
-   int8_t _restart ;
-   int16_t _options ;
-   struct Mission_Command _nav_cmd ;
-   struct Mission_Command _do_cmd ;
-   uint16_t _prev_nav_cmd_id ;
-   uint16_t _prev_nav_cmd_index ;
-   uint16_t _prev_nav_cmd_wp_index ;
-   uint32_t _last_change_time_ms ;
 };
 /* compiler builtin: 
    void __builtin_va_copy(__builtin_va_list  , __builtin_va_list  ) ;  */
@@ -690,52 +432,16 @@ struct AP_Mission {
    void *__builtin___memset_chk(void * , int  , unsigned long  , unsigned long  ) ;  */
 /* compiler builtin: 
    void *__builtin_frame_address(unsigned int  ) ;  */
-void __deserialize_scalarInt16(unsigned short *ptr , int fd ) ;
-void __serialize_Content(union Content *ptr , int fd ) ;
 void __deserialize_scalarFloat32(float *ptr , int fd ) ;
-void __serialize_AP_Mission(struct AP_Mission *ptr , int fd ) ;
-void __deserialize_mission_state(enum mission_state *ptr , int fd ) ;
-void __serialize_scalarInt8(unsigned char *ptr , int fd ) ;
-void __serialize_Location(struct Location *ptr , int fd ) ;
-void __deserialize_Content(union Content *ptr , int fd ) ;
-void __deserialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) ;
-void __serialize___anonunion____missing_field_name_1(union __anonunion____missing_field_name_1 *ptr ,
-                                                     int fd ) ;
-void __deserialize_Mission_Command(struct Mission_Command *ptr , int fd ) ;
-void __serialize_ptr_AP_AHRS(AP_AHRS const   **ptr , int fd ) ;
+void __serialize_scalarInt8(signed char *ptr , int fd ) ;
 void __deserialize_scalarInt32(int *ptr , int fd ) ;
 void __serialize_scalarFloat32(float *ptr , int fd ) ;
-void __deserialize___anonunion____missing_field_name_1(union __anonunion____missing_field_name_1 *ptr ,
-                                                       int fd ) ;
-void __deserialize_Location(struct Location *ptr , int fd ) ;
-void __serialize_Mission_Command(struct Mission_Command *ptr , int fd ) ;
 void __serialize_scalarInt32(int *ptr , int fd ) ;
-void __deserialize_scalarInt8(unsigned char *ptr , int fd ) ;
-void __serialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) ;
-void __serialize_mission_state(enum mission_state *ptr , int fd ) ;
-void __deserialize_AP_Mission(struct AP_Mission *ptr , int fd ) ;
-void __deserialize_ptr_AP_AHRS(AP_AHRS const   **ptr , int fd ) ;
+void __deserialize_scalarInt8(signed char *ptr , int fd ) ;
 void __deserialize_ahrs_flags(struct ahrs_flags *ptr , int fd ) ;
-void __deserialize_AP_AHRS(struct AP_AHRS  const  *ptr , int fd ) ;
-void __serialize_scalarInt16(unsigned short *ptr , int fd ) ;
+void __deserialize_AP_AHRS(struct AP_AHRS *ptr , int fd ) ;
 void __serialize_ahrs_flags(struct ahrs_flags *ptr , int fd ) ;
-void __serialize_AP_AHRS(struct AP_AHRS  const  *ptr , int fd ) ;
-void __deserialize_scalarInt16(unsigned short *ptr , int fd ) 
-{ 
-
-
-  {
-  read(fd, ptr, 2);
-}
-}
-void __serialize_Content(union Content *ptr , int fd ) 
-{ 
-
-
-  {
-  write(fd, ptr, 12);
-}
-}
+void __serialize_AP_AHRS(struct AP_AHRS *ptr , int fd ) ;
 void __deserialize_scalarFloat32(float *ptr , int fd ) 
 { 
 
@@ -744,121 +450,12 @@ void __deserialize_scalarFloat32(float *ptr , int fd )
   read(fd, ptr, 4);
 }
 }
-void __serialize_AP_Mission(struct AP_Mission *ptr , int fd ) 
-{ 
-
-
-  {
-  __serialize_Mission_Command((struct Mission_Command *)(& ptr->__annonCompField2),
-                              fd);
-  __serialize_Mission_Flags((struct Mission_Flags *)(& ptr->_flags), fd);
-  __serialize_ptr_AP_AHRS((AP_AHRS const   **)(& ptr->_ahrs), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->_cmd_total), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_restart), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->_options), fd);
-  __serialize_Mission_Command((struct Mission_Command *)(& ptr->_nav_cmd), fd);
-  __serialize_Mission_Command((struct Mission_Command *)(& ptr->_do_cmd), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->_prev_nav_cmd_id), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->_prev_nav_cmd_index), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->_prev_nav_cmd_wp_index), fd);
-  __serialize_scalarInt32((int *)(& ptr->_last_change_time_ms), fd);
-}
-}
-void __deserialize_mission_state(enum mission_state *ptr , int fd ) 
-{ 
-
-
-  {
-  read(fd, ptr, 4);
-}
-}
-void __serialize_scalarInt8(unsigned char *ptr , int fd ) 
+void __serialize_scalarInt8(signed char *ptr , int fd ) 
 { 
 
 
   {
   write(fd, ptr, 1);
-}
-}
-void __serialize_Location(struct Location *ptr , int fd ) 
-{ 
-  int32_t alt3 ;
-
-  {
-  __serialize___anonunion____missing_field_name_1((union __anonunion____missing_field_name_1 *)(& ptr->__annonCompField1),
-                                                  fd);
-  alt3 = ptr->alt;
-  __serialize_scalarInt32(& alt3, fd);
-  __serialize_scalarInt32((int *)(& ptr->lat), fd);
-  __serialize_scalarInt32((int *)(& ptr->lng), fd);
-}
-}
-void __deserialize_Content(union Content *ptr , int fd ) 
-{ 
-
-
-  {
-  read(fd, ptr, 12);
-}
-}
-void __deserialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) 
-{ 
-  uint8_t nav_cmd_loaded3 ;
-  uint8_t do_cmd_loaded4 ;
-  uint8_t do_cmd_all_done5 ;
-
-  {
-  __deserialize_mission_state((enum mission_state *)(& ptr->state), fd);
-  __deserialize_scalarInt8(& nav_cmd_loaded3, fd);
-  ptr->nav_cmd_loaded = nav_cmd_loaded3;
-  __deserialize_scalarInt8(& do_cmd_loaded4, fd);
-  ptr->do_cmd_loaded = do_cmd_loaded4;
-  __deserialize_scalarInt8(& do_cmd_all_done5, fd);
-  ptr->do_cmd_all_done = do_cmd_all_done5;
-}
-}
-void __serialize___anonunion____missing_field_name_1(union __anonunion____missing_field_name_1 *ptr ,
-                                                     int fd ) 
-{ 
-
-
-  {
-
-}
-}
-void __deserialize_Mission_Command(struct Mission_Command *ptr , int fd ) 
-{ 
-
-
-  {
-  __deserialize_scalarInt16((unsigned short *)(& ptr->index), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->id), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->p1), fd);
-  __deserialize_Content((union Content *)(& ptr->content), fd);
-}
-}
-void __serialize_ptr_AP_AHRS(AP_AHRS const   **ptr , int fd ) 
-{ 
-  int i3 ;
-
-  {
-  write(fd, ptr, sizeof(*ptr));
-  if (*ptr != 0) {
-    {
-    i3 = 0;
-    while (i3 < _memoizeMax) {
-      {
-      if (_memoize[i3] == *ptr) {
-        return;
-      }
-      i3 ++;
-      }
-    }
-    _memoize[_memoizeMax] = *ptr;
-    _memoizeMax ++;
-    __serialize_AP_AHRS(*ptr, fd);
-    }
-  }
 }
 }
 void __deserialize_scalarInt32(int *ptr , int fd ) 
@@ -877,39 +474,6 @@ void __serialize_scalarFloat32(float *ptr , int fd )
   write(fd, ptr, 4);
 }
 }
-void __deserialize___anonunion____missing_field_name_1(union __anonunion____missing_field_name_1 *ptr ,
-                                                       int fd ) 
-{ 
-
-
-  {
-
-}
-}
-void __deserialize_Location(struct Location *ptr , int fd ) 
-{ 
-  int32_t alt3 ;
-
-  {
-  __deserialize___anonunion____missing_field_name_1((union __anonunion____missing_field_name_1 *)(& ptr->__annonCompField1),
-                                                    fd);
-  __deserialize_scalarInt32(& alt3, fd);
-  ptr->alt = alt3;
-  __deserialize_scalarInt32((int *)(& ptr->lat), fd);
-  __deserialize_scalarInt32((int *)(& ptr->lng), fd);
-}
-}
-void __serialize_Mission_Command(struct Mission_Command *ptr , int fd ) 
-{ 
-
-
-  {
-  __serialize_scalarInt16((unsigned short *)(& ptr->index), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->id), fd);
-  __serialize_scalarInt16((unsigned short *)(& ptr->p1), fd);
-  __serialize_Content((union Content *)(& ptr->content), fd);
-}
-}
 void __serialize_scalarInt32(int *ptr , int fd ) 
 { 
 
@@ -918,85 +482,12 @@ void __serialize_scalarInt32(int *ptr , int fd )
   write(fd, ptr, 4);
 }
 }
-void __deserialize_scalarInt8(unsigned char *ptr , int fd ) 
+void __deserialize_scalarInt8(signed char *ptr , int fd ) 
 { 
 
 
   {
   read(fd, ptr, 1);
-}
-}
-void __serialize_Mission_Flags(struct Mission_Flags *ptr , int fd ) 
-{ 
-  uint8_t nav_cmd_loaded3 ;
-  uint8_t do_cmd_loaded4 ;
-  uint8_t do_cmd_all_done5 ;
-
-  {
-  __serialize_mission_state((enum mission_state *)(& ptr->state), fd);
-  nav_cmd_loaded3 = ptr->nav_cmd_loaded;
-  __serialize_scalarInt8(& nav_cmd_loaded3, fd);
-  do_cmd_loaded4 = ptr->do_cmd_loaded;
-  __serialize_scalarInt8(& do_cmd_loaded4, fd);
-  do_cmd_all_done5 = ptr->do_cmd_all_done;
-  __serialize_scalarInt8(& do_cmd_all_done5, fd);
-}
-}
-void __serialize_mission_state(enum mission_state *ptr , int fd ) 
-{ 
-
-
-  {
-  write(fd, ptr, 4);
-}
-}
-void __deserialize_AP_Mission(struct AP_Mission *ptr , int fd ) 
-{ 
-
-
-  {
-  __deserialize_Mission_Command((struct Mission_Command *)(& ptr->__annonCompField2),
-                                fd);
-  __deserialize_Mission_Flags((struct Mission_Flags *)(& ptr->_flags), fd);
-  __deserialize_ptr_AP_AHRS((AP_AHRS const   **)(& ptr->_ahrs), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->_cmd_total), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_restart), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->_options), fd);
-  __deserialize_Mission_Command((struct Mission_Command *)(& ptr->_nav_cmd), fd);
-  __deserialize_Mission_Command((struct Mission_Command *)(& ptr->_do_cmd), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->_prev_nav_cmd_id), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->_prev_nav_cmd_index), fd);
-  __deserialize_scalarInt16((unsigned short *)(& ptr->_prev_nav_cmd_wp_index), fd);
-  __deserialize_scalarInt32((int *)(& ptr->_last_change_time_ms), fd);
-}
-}
-void __deserialize_ptr_AP_AHRS(AP_AHRS const   **ptr , int fd ) 
-{ 
-  int i3 ;
-
-  {
-  read(fd, ptr, sizeof(*ptr));
-  if (*ptr != 0) {
-    {
-    i3 = 0;
-    while (i3 < _memoizeMax) {
-      {
-      if (_memoize[i3] == *ptr) {
-        {
-        *ptr = _memoize[i3 + 1];
-        return;
-        }
-      }
-      i3 += 2;
-      }
-    }
-    _memoize[_memoizeMax] = *ptr;
-    *ptr = malloc(112);
-    _memoize[_memoizeMax + 1] = *ptr;
-    _memoizeMax += 2;
-    __deserialize_AP_AHRS(*ptr, fd);
-    }
-  }
 }
 }
 void __deserialize_ahrs_flags(struct ahrs_flags *ptr , int fd ) 
@@ -1020,7 +511,7 @@ void __deserialize_ahrs_flags(struct ahrs_flags *ptr , int fd )
   ptr->likely_flying = likely_flying7;
 }
 }
-void __deserialize_AP_AHRS(struct AP_AHRS  const  *ptr , int fd ) 
+void __deserialize_AP_AHRS(struct AP_AHRS *ptr , int fd ) 
 { 
 
 
@@ -1035,35 +526,26 @@ void __deserialize_AP_AHRS(struct AP_AHRS  const  *ptr , int fd )
   __deserialize_scalarFloat32((float *)(& ptr->_kp), fd);
   __deserialize_scalarFloat32((float *)(& ptr->gps_gain), fd);
   __deserialize_scalarFloat32((float *)(& ptr->beta), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_gps_use), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_wind_max), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_board_orientation), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_gps_minsats), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_gps_delay), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_ekf_type), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_gps_use), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_wind_max), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_board_orientation), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_gps_minsats), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_gps_delay), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_ekf_type), fd);
   __deserialize_ahrs_flags((struct ahrs_flags *)(& ptr->_flags), fd);
   __deserialize_scalarInt32((int *)(& ptr->_last_flying_ms), fd);
   __deserialize_scalarInt32((int *)(& ptr->_compass_last_update), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_gyro_drift_limit), fd);
-  __deserialize_Location((struct Location *)(& ptr->_home), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_cos_roll), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_cos_pitch), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_cos_yaw), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_sin_roll), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_sin_pitch), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_sin_yaw), fd);
-  __deserialize_scalarInt8((unsigned char *)(& ptr->_active_accel_instance), fd);
+  __deserialize_scalarInt8((signed char *)(& ptr->_active_accel_instance), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_AOA), fd);
   __deserialize_scalarFloat32((float *)(& ptr->_SSA), fd);
   __deserialize_scalarInt32((int *)(& ptr->_last_AOA_update_ms), fd);
-}
-}
-void __serialize_scalarInt16(unsigned short *ptr , int fd ) 
-{ 
-
-
-  {
-  write(fd, ptr, 2);
 }
 }
 void __serialize_ahrs_flags(struct ahrs_flags *ptr , int fd ) 
@@ -1087,7 +569,7 @@ void __serialize_ahrs_flags(struct ahrs_flags *ptr , int fd )
   __serialize_scalarInt8(& likely_flying7, fd);
 }
 }
-void __serialize_AP_AHRS(struct AP_AHRS  const  *ptr , int fd ) 
+void __serialize_AP_AHRS(struct AP_AHRS *ptr , int fd ) 
 { 
 
 
@@ -1102,33 +584,32 @@ void __serialize_AP_AHRS(struct AP_AHRS  const  *ptr , int fd )
   __serialize_scalarFloat32((float *)(& ptr->_kp), fd);
   __serialize_scalarFloat32((float *)(& ptr->gps_gain), fd);
   __serialize_scalarFloat32((float *)(& ptr->beta), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_gps_use), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_wind_max), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_board_orientation), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_gps_minsats), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_gps_delay), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_ekf_type), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_gps_use), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_wind_max), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_board_orientation), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_gps_minsats), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_gps_delay), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_ekf_type), fd);
   __serialize_ahrs_flags((struct ahrs_flags *)(& ptr->_flags), fd);
   __serialize_scalarInt32((int *)(& ptr->_last_flying_ms), fd);
   __serialize_scalarInt32((int *)(& ptr->_compass_last_update), fd);
   __serialize_scalarFloat32((float *)(& ptr->_gyro_drift_limit), fd);
-  __serialize_Location((struct Location *)(& ptr->_home), fd);
   __serialize_scalarFloat32((float *)(& ptr->_cos_roll), fd);
   __serialize_scalarFloat32((float *)(& ptr->_cos_pitch), fd);
   __serialize_scalarFloat32((float *)(& ptr->_cos_yaw), fd);
   __serialize_scalarFloat32((float *)(& ptr->_sin_roll), fd);
   __serialize_scalarFloat32((float *)(& ptr->_sin_pitch), fd);
   __serialize_scalarFloat32((float *)(& ptr->_sin_yaw), fd);
-  __serialize_scalarInt8((unsigned char *)(& ptr->_active_accel_instance), fd);
+  __serialize_scalarInt8((signed char *)(& ptr->_active_accel_instance), fd);
   __serialize_scalarFloat32((float *)(& ptr->_AOA), fd);
   __serialize_scalarFloat32((float *)(& ptr->_SSA), fd);
   __serialize_scalarInt32((int *)(& ptr->_last_AOA_update_ms), fd);
 }
 }
-#line 1247 "ap_mission.i"
+#line 654 "ap_ahrs.i"
 int main(void) 
 { 
-  struct AP_Mission myStruct ;
+  struct AP_AHRS myStruct ;
   int fd2 ;
   int fd3 ;
 
@@ -1138,7 +619,7 @@ int main(void)
   {
   fd2 = open("serialized.data", 66, 504);
   _memoizeMax = 0;
-  __serialize_AP_Mission(& myStruct, fd2);
+  __serialize_AP_AHRS(& myStruct, fd2);
   close(fd2);
   }
   }
@@ -1147,11 +628,11 @@ int main(void)
   {
   fd3 = open("serialized.data", 66, 504);
   _memoizeMax = 0;
-  __deserialize_AP_Mission(& myStruct, fd3);
+  __deserialize_AP_AHRS(& myStruct, fd3);
   close(fd3);
   }
   }
-#line 1258
+#line 664
   return (0);
 }
 }
